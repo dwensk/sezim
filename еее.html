@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Сезімнің Туған Күні ✨</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --night: #0a0e1a;
+  --deep: #111827;
+  --planet: #c4924a;
+  --sand: #e8c97a;
+  --rose-lp: #e07a7a;
+  --sky: #3d6b9e;
+  --accent: #f0d080;
+  --soft: rgba(255,255,255,.7);
+  --softer: rgba(255,255,255,.4);
+  --card-bg: rgba(255,255,255,.04);
+  --card-border: rgba(255,255,255,.08);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--night);color:#fff;overflow-x:hidden}
+
+
+/* STAR CANVAS */
+#sc{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--night);z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .9s,visibility .9s}
+#loader.gone{opacity:0;visibility:hidden}
+.l-planet{font-size:4rem;animation:lp 2s ease-in-out infinite}
+@keyframes lp{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(5deg)}}
+.l-txt{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--sand);margin-top:1rem;letter-spacing:.3em;text-transform:uppercase;animation:blink 1.2s ease infinite}
+@keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
+.l-bar{width:160px;height:1px;background:rgba(255,255,255,.08);margin-top:1rem;overflow:hidden}
+.l-fill{height:100%;background:linear-gradient(90deg,var(--rose-lp),var(--sand));animation:lf 2.4s ease forwards}
+@keyframes lf{from{width:0}to{width:100%}}
+
+/* LANG SWITCHER */
+#lang-bar{position:fixed;top:1rem;right:1rem;z-index:1000;display:flex;gap:.4rem;background:rgba(10,14,26,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08);border-radius:100px;padding:.3rem .5rem}
+.lang-btn{background:transparent;border:none;color:var(--softer);font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:500;cursor:pointer;padding:.3rem .6rem;border-radius:100px;transition:all .2s;letter-spacing:.05em}
+.lang-btn.active{background:rgba(232,201,122,.15);color:var(--sand)}
+
+/* HERO */
+#hero{position:relative;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem 1.5rem 5rem;z-index:1;overflow:hidden}
+.hero-glow{position:absolute;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(61,107,158,.2) 0%,transparent 65%);width:600px;height:600px;top:-150px;left:50%;transform:translateX(-50%);animation:hg 6s ease-in-out infinite}
+@keyframes hg{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.12)}}
+
+.planet-wrap{position:relative;margin-bottom:.5rem;display:flex;align-items:center;justify-content:center;}
+/* LITTLE PRINCE IMAGE */
+.lp-img{
+  width: clamp(220px, 65vw, 320px);
+  
+  filter: drop-shadow(0 0 30px rgba(232,201,122,.25)) drop-shadow(0 0 60px rgba(61,107,158,.2));
+  animation: lpfloat 5s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
+}
+@keyframes lpfloat{
+  0%,100%{ transform: translateY(0) rotate(-.8deg); }
+  50%{ transform: translateY(-14px) rotate(.8deg); }
+}
+.lp-glow{
+  position: absolute;
+  width: clamp(180px,55vw,280px);
+  height: clamp(180px,55vw,280px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,200,100,.12) 0%, rgba(61,107,158,.08) 50%, transparent 70%);
+  animation: lpglow 5s ease-in-out infinite;
+  z-index: 1;
+}
+@keyframes lpglow{
+  0%,100%{ transform: scale(1); opacity: .7; }
+  50%{ transform: scale(1.15); opacity: 1; }
+}
+.lp-stars-deco{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.lp-star{
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  font-size: clamp(.55rem,.8vw,.8rem);
+  color: rgba(232,201,122,.6);
+  animation: lpstar var(--d) ease-in-out infinite alternate;
+}
+@keyframes lpstar{
+  from{ opacity:.2; transform: scale(.8); }
+  to{ opacity:.9; transform: scale(1.3); }
+}
+
+
+
+.eyebrow{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:var(--sand);border:1px solid rgba(232,201,122,.25);padding:.3rem 1.1rem;border-radius:100px;margin-bottom:1.5rem;background:rgba(232,201,122,.05);backdrop-filter:blur(8px);opacity:0;animation:fup .8s ease forwards .3s}
+.h-name{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,16vw,7rem);font-weight:300;line-height:.92;letter-spacing:-.02em;opacity:0;animation:fup 1s ease forwards .6s}
+.h-name em{display:block;font-style:italic;background:linear-gradient(135deg,var(--rose-lp),var(--sand));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.h-div{display:flex;align-items:center;gap:.8rem;margin:1.25rem auto;width:min(220px,70%);opacity:0;animation:fup .8s ease forwards .9s}
+.h-div::before,.h-div::after{content:'';flex:1;height:1px}
+.h-div::before{background:linear-gradient(90deg,transparent,rgba(232,201,122,.4))}
+.h-div::after{background:linear-gradient(90deg,rgba(232,201,122,.4),transparent)}
+.h-div span{color:var(--sand);font-size:.9rem}
+.h-age-lbl{font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--softer);margin-bottom:.3rem;opacity:0;animation:fup .8s ease forwards 1s}
+.h-age{font-family:'Cormorant Garamond',serif;font-size:clamp(4.5rem,24vw,10rem);font-weight:600;line-height:1;color:transparent;-webkit-text-stroke:1.5px rgba(232,201,122,.5);display:inline-block;opacity:0;animation:fup .8s ease forwards 1.1s}
+.h-sub{font-size:clamp(.78rem,3vw,.9rem);color:var(--softer);letter-spacing:.06em;margin-top:1rem;opacity:0;animation:fup .8s ease forwards 1.3s}
+.h-scroll{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.4rem;opacity:0;animation:fup .8s ease forwards 1.8s}
+.h-scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--sand),transparent);animation:sp 2s ease-in-out infinite}
+@keyframes sp{0%,100%{opacity:.4;transform:scaleY(1)}50%{opacity:1;transform:scaleY(.55) translateY(5px)}}
+.h-scroll-txt{font-size:.55rem;letter-spacing:.25em;color:var(--sand);opacity:.5;text-transform:uppercase}
+
+/* PETALS / STARS DECO */
+.pdeco{position:absolute;pointer-events:none;opacity:0;animation:pdrift linear infinite}
+@keyframes pdrift{0%{transform:translateY(0) rotate(0);opacity:0}5%{opacity:.6}90%{opacity:.2}100%{transform:translateY(-105vh) rotate(540deg);opacity:0}}
+
+/* SECTIONS */
+.sec{position:relative;z-index:1;padding:4rem 1.5rem;max-width:560px;margin:0 auto}
+.sec-tag{display:inline-flex;align-items:center;gap:.5rem;font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--sand);opacity:.75;margin-bottom:.8rem}
+.sec-tag::before{content:'';width:16px;height:1px;background:var(--sand)}
+.sec-h{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,7vw,2.6rem);font-weight:300;line-height:1.15;color:#fff;margin-bottom:1.25rem}
+.sec-h em{font-style:italic;color:var(--rose-lp)}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.rv.on{opacity:1;transform:none}
+.divider{position:relative;z-index:1;text-align:center;padding:1.25rem;color:rgba(232,201,122,.2);letter-spacing:.6rem;font-size:1rem}
+
+/* ROSE DECORATION */
+.rose-deco{text-align:center;font-size:2.5rem;margin:0 auto;display:block;animation:rdeco 4s ease-in-out infinite;position:relative;z-index:1}
+@keyframes rdeco{0%,100%{transform:scale(1) rotate(-3deg)}50%{transform:scale(1.06) rotate(3deg)}}
+
+/* CAKE */
+#cake-sec{padding:3.5rem 1.5rem;text-align:center;position:relative;z-index:1}
+.cake-wrap{position:relative;display:inline-block;margin:1.25rem 0}
+.flame{position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,rgba(232,201,122,.5) 0%,transparent 70%);animation:fp .45s ease-in-out infinite alternate;pointer-events:none}
+@keyframes fp{from{transform:translateX(-50%) scale(.9)}to{transform:translateX(-50%) scale(1.2)}}
+.cake-icon{font-size:clamp(4.5rem,20vw,8rem);display:block;animation:cw 3s ease-in-out infinite;filter:drop-shadow(0 0 20px rgba(224,122,122,.3))}
+@keyframes cw{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg) scale(1.02)}}
+.blow-btn{display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 2rem;background:rgba(232,201,122,.05);border:1.5px solid rgba(232,201,122,.3);color:var(--sand);font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;border-radius:100px;cursor:pointer;transition:all .3s;backdrop-filter:blur(8px)}
+.blow-btn:hover{background:rgba(232,201,122,.12);border-color:var(--sand);transform:scale(1.04)}
+.blow-result{display:none;margin-top:1.5rem;font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,4vw,1.2rem);font-style:italic;color:#f4b8b8;line-height:1.9;animation:fup .6s ease}
+
+/* LETTER */
+.letter-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:24px;padding:2.25rem 1.75rem;backdrop-filter:blur(20px);position:relative;overflow:hidden}
+.letter-card::before{content:'"';position:absolute;top:-1.5rem;left:1rem;font-family:'Cormorant Garamond',serif;font-size:9rem;color:rgba(224,122,122,.06);line-height:1;pointer-events:none}
+.letter-body{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,4vw,1.25rem);line-height:2;color:rgba(255,255,255,.82);font-weight:300;font-style:italic;position:relative;z-index:1}
+.letter-body strong{font-style:normal;color:var(--sand);font-weight:400}
+.letter-sig{margin-top:1.75rem;text-align:right;font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--rose-lp);font-style:italic}
+
+/* LP QUOTE - single */
+.lp-quote{background:var(--card-bg);border-left:2px solid rgba(232,201,122,.4);border-radius:0 20px 20px 0;padding:1.5rem 1.5rem 1.5rem 1.75rem;position:relative;overflow:hidden;margin-top:1.5rem}
+.lp-quote::before{content:'"';position:absolute;top:-.5rem;left:.6rem;font-family:'Cormorant Garamond',serif;font-size:5rem;color:rgba(232,201,122,.05);line-height:1}
+.lp-quote p{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,4vw,1.15rem);font-style:italic;color:rgba(255,255,255,.85);line-height:1.9;position:relative;z-index:1}
+.lp-quote cite{display:block;font-size:.68rem;color:rgba(232,201,122,.5);margin-top:.8rem;letter-spacing:.15em;text-transform:uppercase;font-style:normal}
+
+/* WISHES */
+#wish-sec{padding:3rem 0 4rem}
+.wish-hdr{padding:0 1.5rem 1.5rem;max-width:560px;margin:0 auto}
+.wish-scroll{display:flex;gap:.85rem;overflow-x:auto;padding:.5rem 1.5rem 1.5rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.wish-scroll::-webkit-scrollbar{display:none}
+.w-tile{flex-shrink:0;width:178px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;padding:1.3rem 1.1rem;scroll-snap-align:start;transition:transform .3s,border-color .3s;backdrop-filter:blur(10px)}
+.w-tile:hover{transform:translateY(-5px);border-color:rgba(224,122,122,.3)}
+.w-icon{font-size:1.8rem;display:block;margin-bottom:.8rem;animation:ib 3s ease-in-out infinite}
+.w-tile:nth-child(2n) .w-icon{animation-delay:.5s}
+.w-tile:nth-child(3n) .w-icon{animation-delay:1s}
+@keyframes ib{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.w-tile h3{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:400;color:#fff;margin-bottom:.35rem}
+.w-tile p{font-size:.78rem;color:var(--softer);line-height:1.6}
+
+/* REASONS */
+.reason-item{display:flex;gap:1rem;align-items:flex-start;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,.05);opacity:0;transform:translateX(-16px);transition:opacity .5s ease,transform .5s ease}
+.reason-item.on{opacity:1;transform:none}
+.rnum{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:rgba(232,201,122,.25);line-height:1;flex-shrink:0;width:2.3rem;text-align:right}
+.rtxt{font-family:'Cormorant Garamond',serif;font-size:clamp(.92rem,3.6vw,1.1rem);color:rgba(255,255,255,.78);font-style:italic;line-height:1.55;padding-top:.28rem}
+
+/* MUSIC */
+.music-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:24px;padding:1.75rem;backdrop-filter:blur(20px)}
+.vinyl{width:88px;height:88px;border-radius:50%;background:conic-gradient(#0a0e1a 0deg,#1a2030 60deg,#0a0e1a 90deg,#1a2030 150deg,#0a0e1a 180deg,#1a2030 240deg,#0a0e1a 270deg,#1a2030 330deg,#0a0e1a 360deg);margin:0 auto 1.2rem;display:flex;align-items:center;justify-content:center;position:relative}
+.vinyl::before{content:'';width:24px;height:24px;background:var(--rose-lp);border-radius:50%;box-shadow:0 0 14px rgba(224,122,122,.5)}
+.vinyl.spin{animation:vs 4s linear infinite}
+@keyframes vs{to{transform:rotate(360deg)}}
+.trk-name{text-align:center;font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#fff;margin-bottom:.2rem}
+.trk-sub{text-align:center;font-size:.76rem;color:var(--softer);margin-bottom:1.2rem}
+.prog-wrap{height:2px;background:rgba(255,255,255,.07);border-radius:10px;overflow:hidden;margin-bottom:1.2rem}
+.prog-bar{height:100%;background:linear-gradient(90deg,var(--rose-lp),var(--sand));border-radius:10px;width:0%;transition:width .1s linear}
+.ctrl{display:flex;align-items:center;justify-content:center;gap:1.3rem}
+.mbtn{background:transparent;border:none;color:var(--softer);font-size:1.1rem;cursor:pointer;transition:color .2s,transform .2s;padding:.4rem}
+.mbtn:hover{color:#fff;transform:scale(1.1)}
+.mplay{width:48px;height:48px;background:linear-gradient(135deg,var(--rose-lp),var(--planet));border:none;border-radius:50%;color:#fff;font-size:1.15rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(224,122,122,.35);transition:transform .2s,box-shadow .2s}
+.mplay:hover{transform:scale(1.08)}
+.viz{display:flex;align-items:flex-end;justify-content:center;gap:3px;height:26px;margin-top:1.2rem}
+.vb{width:4px;background:linear-gradient(to top,var(--rose-lp),var(--sand));border-radius:4px;animation:vb 1s ease-in-out infinite}
+.vb:nth-child(2){animation-delay:.1s;animation-duration:.9s}.vb:nth-child(3){animation-delay:.2s;animation-duration:1.1s}.vb:nth-child(4){animation-delay:.05s;animation-duration:.8s}.vb:nth-child(5){animation-delay:.3s;animation-duration:.95s}.vb:nth-child(6){animation-delay:.15s;animation-duration:1.05s}.vb:nth-child(7){animation-delay:.25s;animation-duration:.85s}.vb:nth-child(8){animation-delay:.08s;animation-duration:1s}
+.viz.paused .vb{animation-play-state:paused}
+@keyframes vb{0%,100%{height:4px;opacity:.35}50%{height:22px;opacity:1}}
+.music-trigger-wrap{text-align:center;margin-top:1.5rem}
+.music-trigger{display:inline-flex;align-items:center;gap:.65rem;padding:.8rem 1.8rem;background:rgba(232,201,122,.04);border:1.5px solid rgba(232,201,122,.25);color:var(--sand);font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;border-radius:100px;cursor:pointer;transition:all .3s}
+.music-trigger:hover{background:rgba(232,201,122,.1);border-color:var(--sand)}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1.5rem}
+.sbox{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:1.3rem 1rem;text-align:center;transition:border-color .3s,transform .3s}
+.sbox:hover{border-color:rgba(232,201,122,.3);transform:translateY(-3px)}
+.snum{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,5vw,1.9rem);font-weight:600;color:var(--sand);display:block;line-height:1.1}
+.slbl{font-size:.7rem;color:var(--softer);margin-top:.3rem;line-height:1.4}
+
+/* MOMENTS — PHOTO UPLOAD */
+.moments-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;margin-top:1.5rem}
+.moment-cell{aspect-ratio:1;border-radius:14px;overflow:hidden;position:relative;cursor:pointer;background:var(--card-bg);border:1.5px dashed rgba(255,255,255,.1);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:border-color .3s,background .3s}
+.moment-cell.wide{grid-column:span 2;aspect-ratio:2/1}
+.moment-cell:hover{border-color:rgba(232,201,122,.35);background:rgba(232,201,122,.04)}
+.moment-cell img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.moment-cell .add-icon{font-size:1.6rem;opacity:.3;transition:opacity .3s}
+.moment-cell .add-lbl{font-size:.6rem;color:var(--softer);margin-top:.3rem;letter-spacing:.05em;text-align:center;padding:0 .3rem}
+.moment-cell:hover .add-icon{opacity:.6}
+.moment-cell input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.moment-cell .img-overlay{position:absolute;inset:0;background:rgba(0,0,0,.0);transition:background .3s;display:flex;align-items:center;justify-content:center}
+.moment-cell:hover .img-overlay{background:rgba(0,0,0,.25)}
+.del-btn{position:absolute;top:.3rem;right:.3rem;background:rgba(0,0,0,.6);border:none;color:#fff;border-radius:50%;width:22px;height:22px;font-size:.7rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:5}
+.moment-cell.has-img .del-btn{display:flex}
+.moment-cell.has-img .add-icon,.moment-cell.has-img .add-lbl,.moment-cell.has-img input{display:none}
+.moment-cell .hpop{position:absolute;font-size:1.2rem;opacity:0;animation:hpan .8s ease forwards;pointer-events:none;z-index:10}
+@keyframes hpan{0%{opacity:1;transform:scale(0) translateY(0)}50%{opacity:1;transform:scale(1.3) translateY(-16px)}100%{opacity:0;transform:scale(1) translateY(-32px)}}
+
+/* COUNTDOWN */
+.ring-wrap{display:flex;justify-content:center;margin:1.75rem 0 1rem}
+.ring-svg-w{position:relative;width:140px;height:140px}
+.ring-svg-w svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.rbg{fill:none;stroke:rgba(255,255,255,.05);stroke-width:5}
+.rprog{fill:none;stroke:url(#rg);stroke-width:5;stroke-linecap:round;stroke-dasharray:408;stroke-dashoffset:408;transition:stroke-dashoffset 2s ease}
+.rctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.ring-d{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:#fff;line-height:1}
+.ring-lbl{font-size:.58rem;color:var(--softer);letter-spacing:.15em;text-transform:uppercase}
+.cd-bot{display:flex;justify-content:center;gap:1.75rem;margin-top:1rem}
+.cdi{text-align:center}
+.cdi-n{font-family:'Cormorant Garamond',serif;font-size:1.65rem;color:var(--sand);display:block;line-height:1}
+.cdi-l{font-size:.58rem;color:var(--softer);text-transform:uppercase;letter-spacing:.1em}
+
+/* STICKY */
+.sticky-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:1.5rem}
+.sticky{border-radius:4px;padding:1.1rem .9rem;font-family:'Cormorant Garamond',serif;font-size:.88rem;line-height:1.65;font-style:italic;transform:rotate(var(--r));transition:transform .3s;box-shadow:0 6px 20px rgba(0,0,0,.3);cursor:default}
+.sticky:hover{transform:rotate(0deg) scale(1.05);z-index:5;position:relative}
+.sticky.pk{background:#f9b8c8;color:#4a0a2e}
+.sticky.ye{background:#f8e46a;color:#3a2800}
+.sticky.mn{background:#a8e6d4;color:#0a3028}
+.sticky.lv{background:#c8b8f0;color:#1a0a40}
+.sticky-by{display:block;margin-top:.65rem;font-size:.7rem;font-style:normal;font-weight:500;opacity:.55}
+
+/* FINALE */
+#finale{padding:3.5rem 1.5rem 7rem;text-align:center;position:relative;z-index:1}
+.finale-txt{font-family:'Cormorant Garamond',serif;font-size:clamp(.92rem,3.8vw,1.15rem);color:var(--softer);font-style:italic;line-height:1.95;max-width:360px;margin:0 auto 2rem}
+.finale-btn{position:relative;display:inline-flex;align-items:center;gap:.65rem;padding:1rem 2.4rem;background:linear-gradient(135deg,var(--rose-lp),var(--planet));color:#fff;font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;border:none;border-radius:100px;cursor:pointer;box-shadow:0 10px 36px rgba(224,122,122,.35);transition:transform .2s,box-shadow .2s;overflow:hidden}
+.finale-btn::before{content:'';position:absolute;top:-50%;left:-80%;width:50%;height:200%;background:rgba(255,255,255,.15);transform:skewX(-25deg);animation:shine 3s ease-in-out infinite}
+@keyframes shine{to{left:160%}}
+.finale-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 16px 48px rgba(224,122,122,.5)}
+
+/* FW OVERLAY */
+#fwo{display:none;position:fixed;inset:0;z-index:5000;background:rgba(5,8,18,.93);backdrop-filter:blur(4px);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:2rem}
+#fwo.show{display:flex}
+#fwc{position:absolute;inset:0}
+.fw-inner{position:relative;z-index:10;animation:fup .8s ease}
+.fw-big{font-size:3.2rem;margin-bottom:.6rem}
+.fw-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,8vw,3rem);font-weight:300;color:#fff;line-height:1.2;margin-bottom:.75rem}
+.fw-title span{color:var(--sand);font-style:italic}
+.fw-msg{font-family:'Cormorant Garamond',serif;font-size:clamp(.88rem,3.2vw,1.1rem);font-style:italic;color:var(--softer);line-height:1.95;max-width:320px}
+.fw-close{margin-top:2rem;padding:.8rem 2.2rem;background:transparent;border:1.5px solid var(--sand);color:var(--sand);font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;border-radius:100px;cursor:pointer;transition:all .3s}
+.fw-close:hover{background:var(--sand);color:var(--night)}
+
+/* MUSIC BAR */
+#music-bar-fixed{position:fixed;bottom:0;left:0;right:0;z-index:500;padding:.75rem 1.25rem;background:rgba(10,14,26,.88);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:.85rem;transform:translateY(100%);transition:transform .5s ease}
+#music-bar-fixed.show{transform:translateY(0)}
+.mb-vinyl{width:34px;height:34px;border-radius:50%;background:conic-gradient(#1a2030 0deg,#0a0e1a 90deg,#1a2030 180deg,#0a0e1a 270deg);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.mb-vinyl::before{content:'';width:11px;height:11px;background:var(--rose-lp);border-radius:50%;box-shadow:0 0 6px rgba(224,122,122,.5)}
+.mb-vinyl.spin{animation:vs 3s linear infinite}
+.mb-info{flex:1;min-width:0}
+.mb-title{font-family:'Cormorant Garamond',serif;font-size:.85rem;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mb-artist{font-size:.68rem;color:var(--softer);margin-top:.1rem}
+.mb-play{width:36px;height:36px;background:linear-gradient(135deg,var(--rose-lp),var(--planet));border:none;border-radius:50%;color:#fff;font-size:.95rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(224,122,122,.4);transition:transform .2s}
+.mb-play:hover{transform:scale(1.1)}
+.mb-prog{position:absolute;top:0;left:0;right:0;height:1.5px;background:rgba(255,255,255,.05)}
+.mb-prog-fill{height:100%;background:linear-gradient(90deg,var(--rose-lp),var(--sand));width:0%;transition:width .5s linear}
+
+/* FOOTER */
+footer{position:relative;z-index:1;text-align:center;padding:2.5rem 1.5rem;border-top:1px solid rgba(255,255,255,.04)}
+.ft-heart{font-size:1.3rem;display:block;margin-bottom:.6rem;animation:hb 1.5s ease-in-out infinite}
+@keyframes hb{0%,100%{transform:scale(1)}14%{transform:scale(1.2)}28%{transform:scale(1)}42%{transform:scale(1.12)}}
+.ft-txt{font-family:'Cormorant Garamond',serif;font-size:.9rem;font-style:italic;color:var(--softer);line-height:1.8}
+
+@keyframes fup{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes fdown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* MOBILE OPTIMIZATIONS */
+@media (max-width: 480px) {
+  .blow-btn{padding:1rem 1.8rem;font-size:1.05rem}
+  .finale-btn{padding:1rem 2rem;font-size:1.1rem}
+  .music-trigger{padding:.85rem 1.6rem}
+  .lang-btn{padding:.4rem .7rem;font-size:.8rem}
+  .mb-play{width:42px;height:42px}
+  .w-tile{width:165px}
+  .sec{padding:3rem 1.25rem}
+  .h-age{font-size:clamp(4rem,22vw,9rem)}
+  /* Reduce blur effects on mobile for performance */
+  .letter-card,.music-card,.lp-quote,.w-tile{backdrop-filter:none;-webkit-backdrop-filter:none}
+  /* Bigger touch targets for photo cells */
+  .moment-cell{min-height:90px}
+  .del-btn{width:28px;height:28px;font-size:.85rem}
+}
+
+</style>
+</head>
+<body>
+<canvas id="sc"></canvas>
+
+<!-- LANG BAR -->
+<div id="lang-bar">
+  <button class="lang-btn active" onclick="setLang('ru')">RU</button>
+  <button class="lang-btn" onclick="setLang('kk')">ҚАЗ</button>
+  <button class="lang-btn" onclick="setLang('en')">EN</button>
+</div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="l-planet">🌍</div>
+  <div class="l-txt" data-i="loading">Загружаем...</div>
+  <div class="l-bar"><div class="l-fill"></div></div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+
+  <!-- LITTLE PRINCE IMAGE -->
+  <div class="planet-wrap">
+    <div class="lp-glow"></div>
+    <img class="lp-img" src="data:image/webp;base64,UklGRlQxAABXRUJQVlA4WAoAAAAQAAAAZwEAZwEAQUxQSAQZAAABxmDctpEjW/13PWl3Lz4jYgJ0cb93Xr18K+qYA9U4WYnxGak51eJkceM+60078Sl37DjQBjVURW8bSysgaA62VgJKaQbHBZLsMA5eYC9abZ0MGaLeUYMFWPTX6R4Z+x+l6Xn//zWttm37QcLvl5AACYHitFCkeAp1o6teSm1fcri7u7u7H3N3nbofx+gYHv+BH8dMhi5F1jq2JNua7Z9vREyA/f//D0eSam3btr1tBVWpjtHxdMdmx0khle5kNm3bZ9u2bVv/wj0ei9aj5oe++60/n4iYAGvUti12Wr0pkha3tlgO7m710oP7wd2lhtQF17q7pGjQCu4WwRucILUQJC4lroT3x+w988030/19x59ExATgUf+f+v/U/6f+/6+CVZaM0WPtRt8/uIPu8n/kzZrtZo7s0GluDb31dGT0yq0/7cvdNHbRO6X0VeXm2y/woSts3LqiW/P6uuqxs5F5hUfjOb0IQEb/ulSmmp7aXXiH4/emA0gDgC/Wrpy6qLaOGpyJvJTDt9j01T3x1fVTn11ZiA3JKTSXxPhDO/m/k5AXdSItP88cgIRwzTTryvnE30/mcHb+HStAhFZq9lvkrSvh2ekZBXdY4Gl95E+bj/524mRGUVZeQZEIaKNqYz6JOH/0eDJSc/LusFjVeiSzvTtVHhV0+frJEwnxSWk5RSy4qkKNbDW69gLGxE/c564uo+acTDh9NDU5MS09O5+BWyKgTFMz2es19+nZP/BIzJlTWYlZnFYE8X5KFFCFit/yln23y5Ts3n/8x+eP7mPbD6gQg7qwyatPuUzNZ1/64tvte9n+JAViYDebfr2qu3RaWHRx7z6W8M0qijOZjWdNRWGWq0QzcOA0yziwn7K06G1g65G/8wy/x9yjNwO4CRnnlyqjLMU7Apji6ZiZPDa+3m4y4AosL6nrE5cK21HzNzyJHuAGb0tTSWG+YJyG/XOc9Eg5gj+xrB1IXcvcYODIGtvgnJbK3AdTA5c1j5akMynsZJa1oSO6Dbnm4trK5UEsaw9S10nfpEsDDJXuGlWmPjW79e6NYaHvSdKW1LXJ5zdY4onS3WCu1SeXtt+x89C2/bekuJsU9juWmmTX7/OzwuTSzjtWr90fvFYGUtoGUl2Ujr+arzanlra2l++9vPawBKS0E1nuKtKRkbOz88vrO2vDsOekbUdJab9h2SVTwl3DE3Oz84s7wXsPn2O725LSVg6SDnJJlpGbnltYmtkM3bLRNlLVeUtfm/tRemATlv8pqSA95lqAuY3t9bXbzrG9vUlZ17HHVg74Si50JKkMO/Get7/J9h4kdX2cnVtbrqS29f6n2W989HWbSWVLv++YTJJ6+969Ha+LfoVMl1aPTq0dA9SXx6yX9/Ovi5zfkkz3/fofLZTjh0QH4VU/SaoSAtneM3XJfCkGMFM52nKGgyZROxlqv7uFbS2YU4KsrmfjGtWQ2dEENLOP7U28h6w/w14Vo/ErR40jCePY1sFkvUyn/awoGDBiLzvmFft6s52zSGCNbqPDWFlCwQxERfx6ftUl+VqS7WzjfBJZu+cLP7PZwaoBrOz/a4R/9YcfWWpPvgiyPZVFB5LQtiu2s1VS1nFsc56A5jZVWfAlfxJZ4iMWqS5V7RJqS00WvISEjkthoaSwlk5J8LsNLPYyCW2+ggU/9Yi61LIk5UlRM1nkeRJaut8VFl6J1HW6ZFGGDwWxwJEktEqPj1NjWHg1UthThgN2/WoCmxggodls+i4SXqbzsCconsV3IoXV2FjSLo+dPZys9N3n3QR0YNP3kfCOw1sRMILF+5HK1j2Uk4JmGUBo3NMam/6JBFd9tG/eUMJPh1n8YlLcdwwkxQs0ja/iNgmsxF5XfVvjJRJapn2XVXMYQApsTCTl9WcgVo4thNofB9Tfmu46m5xbj6xXfDEz3PHkg1993ebblUiBGSA54kkwm/004D5TZWsFPDy6U7d6s9v7uuivkhL3+AhoJgXEPMMmIwiVO1Yg/4BWHXr3fGZ4t14fJQTR53wuvkuKPKQ2sNUxOWyS8PIP7077ZUHHx2jcy0O+3HrlNEs6k5R5SQkCS5kkgk1+BpMfQtqfF3FCN1JsOXYIYGfHnfi6Nam3HBOssZNnqi1dScnlKGWJnbtqlj9K/K8uB1llx3bt7k8q7wB2ZvBUUn4ZnrWwWr51j5AeHCYBma/OQgvyc/bAymfq3h6NSS/ad90Ci406fnVj0LEbv34+uQlpTPui0sLam2DR59/uSPrzXruSGcAUL+w92tSlmQGkR+3y3M+whD1nXggM5mt7LgH45OVepFGlwAHC64f++tuPS3/8U3ee+PbuyaRZ69px05vJXc+LXxBjfqu/7kf6daq4CPYe52XD1zerslSNs4ezwi6w9U+sDD+TrZTYw1tBESzi6+8KXHD2EPeAkByIDH9x+X72cFeI2NVXiP/39pQF3i+7MvFwB6dkGVlC6yBUJlTXOqgrE/QO0EmijzUP23nJCrRVBGulp2yIYOuRWidZWAGEah2WW+tckGuSxinxklxH9M1sll3bVGVNNow12Q+sx/qzIzVM5Q/ZmRndUsHvDDtVt7CD9cpkdvKLOmUJO1unsMNrapSLDntBo8Bh27VZrEZhp+uT9tqMdVmC4wp0yaPs+K26hJ0/VJNEuwBpUtZl7IattMgiV5inRdgVn9Eh7I53a5DG7nCcNCi742xt1l2DsEuS/qwj7Lx2gjDZx+mQLsKGyUU6tAEEdYz+doVEF3RIdVosiHg1BWdIQzo0iAXfT8vrV2RE6CMWTgACWdqqGoRN/2mKjJ/JQ/pznTnTDTwcy5flb/qjCoveQcZujBOSxLbTHmw+xwwBKPMhG29flwHQHfstkAkC0HwDy6052Ao8bSUA/mtZI7E1vMPATDIuZLnTkKwzpogAWhaHsTHLHsm9NUaBGK9BQuJsSeIf9YUfWelmagA78Df9cIdnxr4PWGBuL5leKmSnTfG56te/AqH9W9Fs9TvNCLjXFJmefUSI3d8cV7pK5djGN1tN7vaBId8DmY8pcsD2QSo3jW0/ZfBI5qddYpFxdnUhlWeJyeKiUCEFdrVRuX4ywULESRGfhsk4Mbu7Ktx4x9RJzRZh/h0hABa2/WqimuGUU776gwUuMIdTIqJg3KVocErMWRGWwwV4HqFoQxxSnGNty+L9jCAxpOjrHDKd7Y8HNrH1aMNpRQtyyIkc+1KAmDhraQYsVbNVDuFk+3Jh5y4l2+uMWuzolwcfmahiF5wxzVlL3qXSFsp26fGsn/rsdMYmZ2V0IIuVBo+huq3V55gzbjgpch5Zbdu9TBU6xi2VJ9UZLOEfwn4oR1Yfa1jyaQZwafyM+cMqqAy7Vbig2NSAPVam/vg1e41kxD6uXYIgOJODUdvcIDa7jYEjuiHfvj9FAUgnsxv3s+kgAHhAM7BTsxj5RSbqbWSLGw2f6pVbwoC0yC88lZzD1rcZzihLOVfaCTtXLe3SaHL9gIgkFgVlqeqMWnY59c4utSmX4Yguws44K2F/nqG6qvifk6mct8XCELE61EG7zhYYavtmt9153SVi4aZMD3mbLk7qBustBSLW8KjPdeW9Mm9mhE2r7hapIsvc19B5E7t3qGGMzwWO18bW16YRLCI1kCoYrr8DWSfeqehbPUlLHtj9fN0gz65lRGoqVbL7ze5c//nG8Pd8qVctY++55v6C5d2LkvcNiNRKqkHuB58tDzy454dOPlR86fPm5hDh+PhOi/LSZ8SpKNVf4dRPFnx97OBMn+mARb77fcc7fv3l7NTOY4RdKw7u+BZvf7jo66O3g3ym67u3Fn42Sf74B9//WcgbupEUKd2GLEL+DW6zbU3QBsZuXylw8aJ1WfXX8f71b35Pk1m7sEck9i3/2LpyJyPYxygjDsMnvbOS+sm314yOb7462vqs9SQFfBzCOFnDt7CzeVvxxGe+8uXv/yje8mLijlSrSDm+xtvhjLgHfSXECOn8Rz75sU997ewEPkMRIsf7Gu+FMVKmeCbA3bQnubi+8Y536wnRI32NTw4yMpZ6KAB45YHY5oyeEP+Kr1F0CFjzk6d6OK7oVl9z86B4oT7HOaBPI0/VFyvff4Pa5xXvJ1/jk+uM9GRPpR1WPZRI554Vb5+v8VE8kJhmNvd6Ia/Uqr/NF/HbCfG/9y2SODCTkZx6cn12dftOV2Uw4tzrvHDdI9Ju1U3nwKe+xZ9YBSAz/87xOZ0dD2+fzTJsXt8SPg3KPNHp8ceIc/Dd3iIXaxhAtneQKVYr0X6ZFu8moNthexppX+wtgNWGjOnKxOry2srZtIk0aO4gzj+wZe839Br7DVGb+ZHG9Mzi+uJc3KwwkFey0FbR83W8RpLh94UCLzSaEzPTC00m49YNHDAYTdNrNPw68eSjMuU8Rd6X+9gYtZXj+NpoY2JyjGOrUAkNH7POYCUjhqcYzgDelSjiKY5dTPVwZYrlWKGGzc2ZIscyiE86ubrdYIARVjxEtXcZwFfezn9ELO4pEA9j4cViTeAYlq9t7M01OIbFd77+JU952mWSgUfgHUpPeIWReOc5TyYufatI8BYpyYbUU8FAmqsy5VJh+YN7dYZFeuc73vq2Fz2jyoCw7hlwZj+dCzmFgN4BIR9N6tbQUfNd6k83Xnj8+PsA/933y2rGrdXZQ6lENjPWXJspMxUEFoWKofMGAuDGEwOgdfhqw3xC2/5hnPfniGpO+vg7lwLw/Z1Ss8L+OtVvXweArwsFXij4VNZENJZOQnNnenJmvMoyHGRDhk4C4IpbfV5h9IRJgQygo5+TfmKX/u4zmFzrLa3szky1/+cNVigVESM+jEUTwyngG7Pbe2+vs1wVRlI61bMEgOEp2n40mwGMJNG6bfw/uPVbWLJjg5YW17afcB/+VGNLWa89Gnb7AqEIxCCaxAJXGWuwfBUr1bxep3qU8JT1XhqaxMDHJFqdW11Judb+XKexUO/0Fu1FesaYGC//ifTqVSazC3HI7QkgRsIYS2Iqm8kXscxWgAtJVXo66iU69loem3rsIRIbzFSX1pZ26Nb2kjtl6ovtBeraaFV78e6/8btXJLHX3wY7SIlMZXY5cAi84PGhPxiOJoYzuVKmUNxfdmso5d19DwE0aVuKhIab6wd9bO9t7N46wNVtV2LNBmrtXqdeLtTKWkhmlc/4qoePmttICUgppdMxBAAO+5DLg4FgNJbCHB5UErJ6CsN7JQ8henV4sE2b/d09OqJ9HLhUp9lqd9r1SrFQ3+7FFX+7T3ohAxFz+9p7uyRdIDVazHYAM1jROehGjy+KmMLcAWVutGg6GQ5uH3uah2Q6rfTVTuzqlUmABClOLlyq0rA77fnCbH5r1aa9XNy++9Vvffl1g/WDvT6AzRODxWyDfQAWh9PqjMciyVSmiFhmBH5UwAFKSaPh5pNKYPHSoKApFSmRSoACIPffibrQ71iz2ugQzWXTiaX1UnNz/2g42DnbXt48xK0+sLEJpc1k2T9gRJPZgjhkt3pDqVIR+ZHGxPLm9oRBSispQ7s3iexfn1F4MLlfhjQNrisu9AFfnTp1yqWS8VC2VaE6dVbsWjHVB7Bxc2WD0hotZgOAES2IYDABgAaHgkWGrwn1uXe98z2TLrVCRWsuGYLcY6iZneuzsWpU7KcRaXC7/k332U3WqN2rxKy4LlOsXCgXZnPJiBTsbW2uLq9gAzvo6pAPmHQmMO7XKhF1HiY+aB5ieaZSyI0s7mzxTFQJCnqMzmB4iVDePr8YDMcceXC78nT3UWvU6tnljKn6BBOFbAq5WUshrbxGtLSIFWwAunoMRi2iATX9ahoRFf0O1xmnWeuv8MBUoNbMs0LcRJ/Q42MMac8gGgdXdHE2cf/+Ay7rbJJ/ugRbay+u9bJxTWYA9NlsMm6FBJRCq9lbWx4FoNRrENVIy2kSQNJDyfqkJK2Qq1wZAdiKX+XNcvyZy+HpVZPBkD1Bs2EPL87oHMMbigOOOLjos8ff+NtL1qupkt3bGx5urgbZSOdasTt7x+1ZnY1MpGJWWFMVisxVuusbwArQ+nK3UqVRa9S0jATsg7Zne7GLpKAfFS0vGvzFstdOKX0u7XH/6OByjaEadr9M/3xwfDSgMyI6PaaPj77NxguVSJEZAOFsf471Or2D/iqsUSFd1UmAKyJo5cp1Wlui3jPPS7pAJVPQKEOyrwtevhteePHl1pdb5S/fe88jTyptRp2chJ6uldW1jZXNLYbtgsvd1NIp1WnUSpqUA60bcNm0pOIYQ2gMaSOshYxIOhGnZDxmREzdbyDM5p3qHanlVttUEl1zFOSAABdcIUEU1KLlToPS+cpCeTXb2z3Y3cdOf3utU213qTBHpTmqzBXtVmF5Y32ZiNY2VoDVTYZO2dW6tBQ1ZoPJbrF5g2m2UeNLduoYFzjap5PT9VYnHUslZ2KWSbphhiPBALG3OFVrftGuSvFWKTYGgCQrquAkwBEImkZK57KSsKRYsrm1vrq23Kvmy8UsJePWTDqVy8bTZq5U6fRoiZbXiKhHSwzzZRdrbHcpaI3Z5EqVq6M1AXypKl/SHoOG5wDo8vqiVyvmUzFEzZBp6IlIIMR+5FSs2bWrgVQxbk0CQBbgykhZkRUiERAAj5YbdqedixjpZBxmiKwZK5ZELKQbiWp9sdtuLRGRXW8uM5Tm3St60Efr9M5YhWN5ZLiQPCKUWD15tMHwbDAcnA0w3GgW87E4TCLStWhOJ/Zvx+p2KBOeiVnmdIoKUohACHJBpBIC3EjES3mdEjOmbpihcByWATNMHNFksW13GjZRr9lo11YYcq41r9xSGk2BLMeiUHGdcTjTNaFaUiuONn5Im61SZsaaiQCmroSKJGaca7FesVJxA2xarggEJQZZlQg3VYULPwPA5VBEYXpYM3WKRMM6kaYKzUglU5V6g1qdar1SW1hiLu1Xw1XWdUfiJY5FJm8iwVvjU5GQiaKPf040vKTTei6TjVkGmVENgZBgQ+eyK6lQ3IpFp4KAIrPJJaGyiWU9yABNJSKFgZPw88RCvdlamG+WawvltiupmhFCsnBSyvMMzwhlo5yWxauDCpTTh6tpRDVdXNHg5HR43G83sploSAvySFSTGPycfdC5uvM5M24ZUWkqOaCwaSXcX0UmP7sZ4qaRKjZS4fICERVbuhv5OUXzlVadY6BaS2ilKlu0ZKRUdD8iTSJqELt6VCDd215c2ej1F+31UjWhs4k5+71z1Ysp3bAA5pBBI6zmK3OF+SLZLgSJeLS8EA+XuJGiTaF85uve8Zbnnl+dXl6cXz9yeT1YrsX9crYYq3UX+ydnp+dX97aSGptcx7+d+tNsLh9nmhHSnAKK0GI5pJBM6WF3kfwjREQvWy2BgltjT1Xe//qnHW03U2a2vdZpzGf1SGa22Lt1OLh3dU2XV9dXe2vtIJ9Cca7Hs2QiIzPoQQfhaohUEdAEyC1kAJJPHqFwOare16pzpqoC+8JhR1dkifsZfGFzdv3qzt3r24PDnaoVzcxRIan5VTatz7kueCoO5qikEZGARAAQcAcfA2TAx25KsqQDbg00+Fqi2/IFVEXwQCRb3T3cWrZLRcrOhIMqkzgR+WQufFMh6FhP8iVihrMIlQsARBxAkLsCAAkTkuAMbtCzec+zxGgl2VzrpCJcJh9IIi6gYDxN13OsN7CYIZwFCKrEAWWkrjqf/8bEfkkwuObau2689IJDIMMPiPutTvV4x3ojM+LMabmiamJC3fGml25cQRxTEQ+SpvmgYz2XmXBg7p8k6DqABLj2vHOITS7jl461ySJOBKgTyJIrlSfzivwg+BRAplv9VISZM8sTgNwHliQ/A/yASiIwjmMMpmLTKTdh4YBDBTjGcMmVBBMBoKn8U5SgAjOfZK6SZk6tKuoov+TzDKNVARBuEhEHmzrczCfgYymSx4DgqqYIVWE3abrVZpyVObhfHgUiyW2K26VwBsi472Nd6mtOBj7GL5Pb2C4F2AMtJep8iMOYowsoI+CXJW/xwIVs2DXjzee+Xf2BLTdteqlrkLf7+shrrz/unj7ziS/7i7fbQN6VtNgkTimKPRKMlNfFJpeXhTqOSV6q0NTff/Tbj3055e9f3T1+9ZvqtZ9djUVmVkT4ja1v/3jscNCWND5+AsiA3eT+XBtHniraW0r8zfeMbzVsqr7WzfTm9fNyhU+sCsF2XPojh4tu/ZERzUg6yUCuPeH0V6jI3iyBb0alpwCF5yP21XMjiaz15hcSVquW3/7oF34OLgoL+e1KJCftC2Hvwdmisl6iv0hZBEaBmJduknX4s+PZDMSf2f9eLm2iOh97/DqWLKP1uBe+fuPe3SsXfBeWxlifwncu71r3zAPd0aD7jEBQola2v/rIyryfubAqFE+GW2sXH4xJSE67cfLN/r7nH7tdZTU8H2Gj76pQv0Xl8o3a4R7yKXnAm/H15wKvRh3/ceXLzw7sSoSff444+WryGEX2VFX6dujVp9PfF++b99mHkjuJE/IIrnoso3Xv07/4ZId5aJVTgPkCMhfksbw7F+zRVQpt9qj/T/1/6v9T/5/6/z+FAlZQOCAqGAAAEHwAnQEqaAFoAT6RSJ1LpaQ/pSRT6VPwEgllbuFyu8GWhp7jFvr07zm8i3wzJ34NyLrKXrC/THsHdA/zHft36xPph/xnqAf4jqcfQi6Xr+2+djmvn9b/GH3V+LH6nxb8sHvr9z5TDV7IVy0eS+oX7O31fbfMF9y/tfgQ6r/ijow/4Phv/bvUE/n/+A9WP/F8en6F/sf2u+Ar+Yf3rrJfuj7HH7P//Qb3bLOrzGHuh1eYw90OrzGHuh1eYw90OrzGHuh1eYw90OrzGHuh1eKIGdSjSytpWN/LiJFPMNhS1VdWr90OrzGFaLrEKSsemwjzfTdMLY76P08RteI9tliBgu/RrO0BYoQKGCvJrt26o0iIrPtstI7mtlnVr1FUXmZ6TmvMqWHSyZGeHZ/xRAN/p23MwqZtpjKW/Rp3A22tQA3IsbqX+GlleKZ8UPodlnNbLOrcGzLUrrrcsfJx2arCJ/d8EKA53x7vzQKEQvqDo6+Vx1bfB9Vz2gY2Tn4UK+kDWNrhrBez5hc2fIOR6SVj7VTnmFlnV5fJoNOtw1zvdDtf9SopV09ZolOOyjZXyOpEJwJPw1qxjfdnuqb/4bcHy3yXHSz5zPejR2yzq8MNF2kFh4ARowscFn+n0EwUDVONbmI9YrpJp+/Jdss6V3M+QE8Qe0bjGfPmj5z4byAP8JJhOa1An5XUD422q83qr9EaYe55/wKQ1RkxSYyxIqM2t1clTVgmomLcqTpQuKmAoxmMSeZ8Jby5NP4jR2yuCv+fz+sZ95WK9qYMUS2/K6JqdEn6OtFK6DyEGfZ6xXZMSI6EWZJpxJyafxGjtlb/48bDapqgBcY+IJycOIHSciDSUh/QvYHnYfzz5q9/DipIUZc2RhhrV1EKAmvsGqLxHfjL1GHuhvA2LEZlyPIQWMhnklBZBI5MLoewwDR54pmbJD3zH88f6yMJDaQWVPPYWsGO0hZXJJkYd6kOHA99LJlDqfS7x5jawYmIEsbrUCiUxXazf/xq85JFNpvZuVdNzC8jci59gV4gZCIrGAB8Tm9xs/TzGXCi/A9a7kt4o7AK1t5KmLzsk8VGK8f2vDuKSKH9RNEN4NUdkdGHcr1+WuAjJ3rWWdQn/3jUfjJxAuepndNyPXukiDO/gLveHgEou0s+KGNHq21QY55QDxr3TiaZZWtJjTJskCC/ZpXPEun8Ei3Qr1bxt3s3PvOFx1vvfdeO0ABetEx2Z8bfdmxxbK/v9W9yjtlnS2wpDAkUN4Y3HIOdnvaZgd5YwmvYjTD3Q8fAW2WdcA3rDLOrzGHuh1eYw90OrzGHuh1eYw90OrzGHuh1eYw90Ory8AAA/v9K1AAAAAAHhMtAdIsYBPAVwy7aCOTzTWkL2hXG3b/E6yyfmMJt82C265d8aIAz8yq9Lod8QE//hnkZ2qNU1FCq/405kAuCfhKT6r1EZ5iQlsNW5JREvsNXHpVFrjzleC2MA7SqQlVJ7oY7Vlb4AGz0wR/hWfLDm3DLXdzGqoojdNP3WeF/3evcQ39/Gns45Ilxo+ocxYjAOnnsweGWFRTxvraXMNALXcTNRn55tyk9XJ4vmSgSfW/othCwXxTeFBo7lD2K63P1wuvtl6P12m2HBAxCni3B3Id/OrTjYNs2i9CgRJN4GCyhVHD7Be73A1Q9WbCOvexoupahoTCQewgMs4S/S/sUO8ATu2KzsAoe7QacsON4Ykm4Er4y+pWdIGggYnOYJ8ribdU56H2M/4QgcIs/oXiV9RPN31dL3K9aTZKLURAAOUbCD6/Le3d9D9WJo7mBuURX3sn/09Yj49hBFwQjNzufuuFQe72jM3QEdoaj1X12QlqyyJPZU+xHMMqvaddwDVlbOsgEuOqArEo5DHWbJw6BOmhsUUZ7uzDLy6Shh3vYrvDs+z9l7+uPr08/wdDEnorUK47BKD1OZ9vM0eN8UrDIGRpm5c0tvoPfSl7RR/8PeZM3n/9AA9VDNVlmTQqt+1cGlonBqD/fv7Ubsc382lPIaesFm/w1EppOjkMiL4G+vch/LgDEst5f+xg4AOzSN/2h9At513hX0JWn244VlWv0n/5ogmY/BVIKT0+T7dP7SiapgUfj12KpxUrfpDL3CfFvOd2gLNeZ4U8lx4j5OIPY9myKRe9Y7gZ7w0BVE5RHu0ULHmbmlUDmCd6KmNkpWCE21ttx3QTDSbWZaOievmDakByg9UXklhzPR6+ZbBLL9pdyyR7/Yp1eDN6AGdelNi+bD9pJqh83WDaa94GLxxKXNyC0PqjEF909Nt6k82l/pFyB4UD8Zi6Tp5nMy5DecpIwMD8SeD1qQcjIpgK7MDSIm4/v9hHamFr1feZXW6Yd3d+VvWewrOCz0ajY/FpDaR7F0X+WrXEE9HiZjcqawN/sR6YQo2M+3rd98z+YKshX+OMTCBHdLs4pYdzUMbzu2BJO4kJU6JJFrAtxIz8cdleUc5x2e71H0gaMMbvwou7ZS2/iVOfF5/ljVmkrtTA0C9IuH7LHKng5x7WOwdfWOGZ3wyaW7TNR7UUpZFc4OZc6QKh/FdGWd6+xdJWEqsEzsxdMLnytUrb+APRQm1ivfC90/Icq5ne1l7cBzDL0XwPrPLTm0AboffjAwsrNJoLMg8mfwuk6I5aVPbgbkOf8TB3SfsW6yPVx+P4Fcye36g4EikQxgLrJQar5iR9qZtllcsFTK2WUt+vHteJ4ujPmSp+pUqcFuDgrI4YAghnk+QswrzN7RUdNswZXn8nEv4/7WdyzhC/taqFddTlYlMZz7IJPHuEWLEvlL2M1BVIXCIbBkQU4QFfjyr8+DWyZwB1Jrjim2YDD9Z9PG4WjI1zlg5jrJScrVT2fmrW0PcwsPWITMWe0gapVWpLgw0Ygm/ClJgKi0TQyv5ZyQzKNpwc6LyxV+HimLUdWDaI9cFWbjSA7u3P9RQuwctDvdj4pzcPspAxLzIWoww2AJv0lOd6ZK2gtkOv9eJmWnl3eF2rAPJyv+gZ4/mt1c+QAotlUmrRxRklpNjiJck4d431hUWb/wTP9AsLxSuvk5ESQ4NaoSJJrixwn7Tz7xyapEUqXcjExZ13Yc/VojkEsQllYcGNiBM/MqaQbfuvmKMTly1ejiEqNraG0yQN1Mro7UyXBDiHhBAi5V67EYZrcSnvdqIOV4wBOhiiC+RW03OJbkyWKqnOtANHkEneRDqsUJYzxCq9hvVSZnhLTJysCzyrjLQOUSnvtzf2DPZTP4TPrnjHlaI1P+qwXV821/1fbYSDxc1KXCmz9IXkkbncoRSlyEWAkK/QDYX8c7GfVKnD12UUZfwjwDt+w2aQsG9FPqMoJ0ZpbhdEvk7oiav6lD66LId6XT8/pz1OT/j2wI/nwVQUSn+SxJNj1JCaSy2LTf9D6cZRf33fhtFzG8k8DKvVd2/9CDnrOA/LfaXK/cFQbBueRB7Vl1RiSrWtqFEo2PNymYsN/ZM9xnXYavQ2g1zci41kwKGW+WtX1ADCgyFAcAQR1lsXNAfGb0ZJxUvJJmGJctRU9M1rTnuDYyX4s5OrlPbmpjymuYoGf/+zWOdN1G4TrouoKrva5vXB2pSCzxi8jgfxfyW0Rz9lxeZZh4I3fC90OYQOqC6YiAxOWuWWq0ocQ0JIaIKkze7y9tH6PCA+AVts+suX8ImhXHu2GBE6OjPRLRuXZvT85NHzyti2E3+b0g51IA3+XY6OxVpaplA5va97VVwRkzf/El3fIM/T1kpa4eqVkuyanJ+YuCusPCKe3U7OFTepz9+zmIed3WfyJvdtzjmBGyuKVOtMyPwWqlrJSXSRQy+bAI77dB0koK+2Pryi1Kbr1PPFWySksiA9zfGJD+O0PUoZYlsVqqImKKRv7LlOGbDX9HmCZKmsm80Dy8tPG1T4JCsp5obD7yxEDgwdwvCeoTA8K1JFOTYEhQcgk3Td7v6BRqeiCkDeNaDi5Zk2IY4NxvQqrztT6k3Hzqh1d9D5KY2NAgcCcTbE4oNQKJuLrzBTeMRMF0JXffyZgaYEyst4fJLdyG/6q2gABhQJUJjvS0tEGT0nf9PGU0OhRhZGFDdtkPv/rrSWk9bFDrmRd0kXNf/yu85j3V83wNbFbBUZmDhfO9d+uBOnRtJMXH3vPY5d5hd1fsipmay65/bB0WTOwu1yc+n43EsHEWMa6ROQf/B6QRgr1X+U920IrBbdXr65uUj9wEy0SNlXVeju82XkL4cF1PmAq47Bksb6EWh4tfAHSDWx77WtK7MBzWzK+uBAAJHDHiQ3zmsYqkC74gtsE/msE3En7X38fDlVKsQkCyvqmTOm0UvpH1IOLp/4Brwf7q8Ze2qvKAU7QmOP5uVAK3oQFZSJztGpurN4aPtjSrIC0MenZFF+MTCBWUjJaCwhuRa7GshCN9IoKJEMTPhBNsYybWcY2b2lwhTFrmmg1hHFmBa0qGQv1AmSFPe7wHiglVxuUH9Q9On+TUEm2OKXOWlYLjajgv6GUSi11ThzyIBVIFAOMcIlshtH5+MaFqJz5l+dRcCTEcz/eb2e5RRzuZhfiM04OiIGJfeBz4Fuxx2I71NN6s+UAGhU+V89IxEaoHWxUJ8JHSlZnKJT3qJbX6nKntaG5dGmbtoOcRbdiNg3/TRSL5Z0NypE0shCTrZcpP+JIizFwy8/UVvF9UAf/iak7WODY9/ZWmzNpH0jf3TjP0PTEWbbi0mi217mwpQUjIcU7jwwRT8cKK4O8LqXIjxMLeZ4DKldXftyYCQJchDx0J8Fgzo4LwtBzvhM6xv8JAKHRlEDnmdJowoy5wwl/W2Hei/i3VpWQu7Y+Lzp/1dsb8TYnnneSh7lLRE18tCZghYvQrsXCHrMVvy+KBWuH854ST/N0fY3XsfG01ATSJH4ZlfV+azEt8/00l5CnyvnGrbDnlouyBLvhOhfnNWSs+EFf1chNxTbZ8Di8zNlyAy76D0Fy8KtNDBKrUehfvhwv9I7ZzK1jhRQApOCMaUrXmMyXdbAw0Wz/M9ae+0o9roZ9XZXPXr9DIzQvlk2DyFLNrBPXjJdpvhNcdVj+66pb5pCxqyWhhO0YUCkCWN8Ru1ZBsrBjYLJwWVaH11x8iArcYd7a16PdTkMEZdXPi6S9P2ALm2CiCbkSe+zX9tUVgScFm6EPLSRSl9Wt2JzflSlZBCvV46eJaGZvEsNb2JVK+e0lklZQEbbH1bjLGOpoJ4wd0CRafsv0C2/GbRS7ox60akVtPw3oTsGuEhBo02tgYihRCCmvKxc4opjUn9/5fd0UQnMzvbcPMFKBddt/QF0py4uIwwIorReZeuo0ySru0lAVxgHyk3Gfh9ifS6QCE7RmmpV1VQyiUWUj+gAF1NgzO0Mny18XK+S9y7PCjaeVv5wCMKCkyk1jBolsVgV1u+dfCdeea39yrSXUowTuYZ0png91IoicpBY2AjEasZsfHUG2Gqx3cMFu5n94Da4nLcTQSbBTB5eogowNCuMaey7fer7a+KgRoM+95XNbd3ZvIGQ3f8K7p0vhK7pZbgXJ9GvegDrzWmKlvHt5Tf/zRe8Xsc7N468t967e+Jzmic2WExFuBOwbCEsoPWSO8bxfsSEDTPQBhOMLqmTxq94v3ES67t5CEJlFncOpg4JEHB+A3RYDwsVG9FSqUcrtoPMtkdXCedd/TrCzo0/kAyix820p+3JGFFxEus/sqQjNAkQg5s6SLTiuFPvWwnpXmgFhjkNkA76BhFkcOJ/4FHUmwqYi4HQVooMZRNiKwxvBPy3MhgEZMWw2XJw3hGPyVvvb60cmG6fDFsLGkpA/CvU8qUoRX2rQ/PKa/03Yt5QSw+iBfV5Mp468yfwMhI2U8pjJzUaIQ1J/VR3M9eqNmPxdsFu0HT3lat63T2c/VHIJKuHWSEXyhT2egLXLh3QCTPl38N5do5kU+eGpB9BcxOwLmgCiFzGmsib/RvHrbL/NeBVUfPXgdsptALOothR054eX8Z0/YBclgsGtTHSm8hCJyosVM27aL4P2Don2Qrv5VeDqWtyO5K4gMkDUuHHPaB+d470Yvq1Xcdeof1FmcKxPXZfv7U+D1OwBrb2W53VYqYKLZtQ6huOG9OA7wz5ZLIebjVgBnAPqzEJawjmywRB36miiuxaODop6I3ZsnA/Be5BvPE/MPgv+fiDgQogExCU46+3vDrEWmxE3X+Svf+FfcD1Nqm2e4LA/5IA9GWqw9fSHy8GntlONRPghdcSFpuTSFoz3fBdhQX44p8w2F0tCr8NImW+RweZxo+MP+4HuFYMTozCtOMTjlE4KIB91uC2U/YS3zXY4ggY5m9JuSODWx/PV99mtIVguJVsNR8phioPfeGlzGVFz+5LkrKw7n5j2VtJbHEGKnz6gPITjwnsarag9sgY4I0DG98CVTsqpB+VDkpxtL/k/MBvEnLOYjZ7G9O7L9oWifOTJ9a0v854Shbf9qXu1AFekccj6y4me8Q1CJEbLocE29958ZWEQTnLxS8FAVbCi+mwGXw19Yfh1iTU3LL9FTMHyu0W/eGnvmSNcXpHKwIvCiALbiP8r8CW/lvZ3cgaXLCBsvQPRLo1l8acagBAQiTp/vXzU7EKk3J/9YjSQPTAIH0X/h+7jOPgClxCnqUvY4GN5n6G//k5P4qgW3m+XCK+mvgf7zeVHJNTZAgff2J2E76AW5fg47D/6ZgaW1JZfYGRhEOJSXauwLF0ajtfy2QVtBta+TeZsY+EIVAsr0YJaPmUlEuuARmxHb54O7mmnoCWRAISDREQQ0dQ/yaTb6ntdU1ub/bMgdwyL4VDUOd1Rg7C8Ral8ykqGs2skndwVejdEojiqUe+QBqsFvJl7Dd6++YbEN89++1/rbPdB36qwC1DMVP84z2uDVjdiw2XGNkRkyxCsAhdyCz+Jft1wLvbzyrSFRVTaoxN2XgxVJMAe864nNF5FkDSM4VKueMu1QY7deF70dhup/33XCfEWAuN19e/8OH3dvMG0u7J1lb/DiAl0EILYIUJbHDBHJd8QVkfw/5E8Y0h+rJ6FPQAvgkx/F3X/+F+Vf/+wQOszz1eHVHDj55Uthp1bA0CZLPgGwY4ElBZg9YEMnybyChsorANgKgyBiqa/3yH6Zk2QgAHGE5+e+1vQVFyqU3ZFZKC/tCjO8ljFScwuwBc5c2G4iRykf+RoKDwCd2dyW2DlfQFgVLr/71hRCw3CZ/GaSQNM8c4/42rIBylOrZ93+u7X2NU549FJAgXP8veLEGy2ACp4Gw/xnM3Yo5+H1hrooLILst8FXCP3CN1lP3pCOYqgtTZzP3v3fAk2P59aGI3XmfHHEFjSYJwAsXxz+LObpdOpFzg9OcXYawZl6OjvbQvmP92Yp/z8opITjovon/Z9lCAPosPG75/QoGvL9y+qAPTQEYd0WL+mkskjd67p+BtyDTXpqmTTx+utNAejAL4Ax4xPUH3bwqNfuMjvNRJSmDkYLvF4Z7kPjJAduKqttfse43ha+43Om8I0ee985+Mmv3r+7RNCMmscCLsW7PAwhG/vI4IZPb9nFjoCS4T5lzAmm9PwzUoiq3bL/VlGpUMJVOslTYmSNCjsrOvOGhB1dulaf+PtA5TU3qDIzQIBOQ/NfCC9b8CN8ohhHMrqa4rIqiE1Aqes1fCu84knLRJC78FgHK8hVzILqwJJ5TrOrFMJZQ/eCCea6nZAjVfb9OxaeRmbRouwfKKLHr2AT1x7wI6/nDtMcMgW1qUu8BxzOAAGebUVI5+MJ+8VzPPTwreQ/6wAtlm/+WW7CDHIrFcGPzTKGECWuLFSmcsB60RQDfo77rmb7SXSjKkaM9uQ+tgbtQyYYQlH1DGqL71U+57KJbtNlj8IE32mI/9f+g9GZRvg+vFakAfUcw0HJPzVytBEfc/JNyX2xTxVcSQO5vUqrWzy8FMrdfVyREKtB7KqSDsTITBMHdQBdsIxvw9+x2DqxEvOpuubU02Dy/l122NNCF2J/4brwQM8vLV+krSk2kFREGeM7GaHuOyD1dp30pqS19Y8kza+QiGXHumv060uay82oVsvjy45UcB1HkzBPo6Kd7hpBLvf+03e9kToShSl4ug6GITsmnTA3rc3h/UqEQLR4VyAum2MoMPO/TYPlq7SuiX8gfpEWV9zcZwDjmgyrGiCXPABbONvJCPimvw5pKRCUfHh2bJt+eZYaJRlgCZ629qP+PoXlJRbRlSWLLv/5F7imp5AQAA6pWTR/QBifrkWDBiUdhMlQAUVfibnUEg3tfcdAA7o9UQc4AAAAAAAAAAA" alt="Маленький принц">
+    <div class="lp-stars-deco">
+      <span class="lp-star" style="--x:15%;--y:20%;--d:2.1s">✦</span>
+      <span class="lp-star" style="--x:80%;--y:10%;--d:1.4s">✦</span>
+      <span class="lp-star" style="--x:88%;--y:55%;--d:2.8s">✦</span>
+      <span class="lp-star" style="--x:5%;--y:65%;--d:1.9s">✦</span>
+      <span class="lp-star" style="--x:50%;--y:5%;--d:3.2s">✦</span>
+    </div>
+  </div>
+
+  <div class="eyebrow" data-i="eyebrow">✦ 4 июля · С днём рождения · 19 лет ✦</div>
+  <h1 class="h-name">Сүйікті<br><em>Сезім</em></h1>
+  <div class="h-div"><span>✦</span></div>
+  <div class="h-age-lbl" data-i="years_lived">ЛЕТ ПРОЖИТО</div>
+  <div class="h-age">19</div>
+  <p class="h-sub" data-i="hero_sub">Сегодня самый особенный человек — это ты ✨</p>
+  <div class="h-scroll">
+    <div class="h-scroll-line"></div>
+    <span class="h-scroll-txt" data-i="scroll_hint">дальше</span>
+  </div>
+</section>
+
+<div class="divider">✦ · · ✦ · · ✦</div>
+
+<!-- CAKE -->
+<div id="cake-sec" class="rv">
+  <div class="sec-tag" data-i="cake_tag">🎂 Торт</div>
+  <h2 class="sec-h" style="text-align:center"><span data-i="cake_h1">Задуй свечу,</span><br><em data-i="cake_h2">загадай желание!</em></h2>
+  <div class="cake-wrap">
+    <div class="flame" id="flame"></div>
+    <span class="cake-icon" id="cake-icon">🎂</span>
+  </div><br>
+  <button class="blow-btn" id="blow-btn" onclick="blowCandle()">💨 <span data-i="blow_btn">Задуть свечу!</span></button>
+  <div class="blow-result" id="blow-result">
+    <span data-i="blow_result">Молодец, Сезім! 🌟<br>Пусть желание сбудется —<br>этот день только для тебя! 💖</span>
+  </div>
+</div>
+
+<div class="divider">✦ · · ✦ · · ✦</div>
+
+<!-- LETTER -->
+<div class="sec rv">
+  <div class="sec-tag" data-i="letter_tag">💌 Письмо от сердца</div>
+  <h2 class="sec-h"><span data-i="letter_h1">Хочу тебе</span><br><em data-i="letter_h2">кое-что сказать...</em></h2>
+  <div class="letter-card">
+    <p class="letter-body" data-i="letter_body">
+      Сезім... сегодня хочу сказать тебе кое-что важное.<br><br>
+      Ты мне очень <strong>дорога</strong>. Просто так — без объяснений, без списков причин.<br><br>
+      Каждый момент рядом с тобой — это смех, тишина и настоящесть. Такие люди встречаются редко.<br><br>
+      <strong>19 лет</strong> — это только начало твоей истории. И ты заслуживаешь каждой её страницы.<br><br>
+      Что бы ни было впереди — знай: рядом есть человек. ✨
+    </p>
+    <div class="letter-sig" data-i="letter_sig">— От чистого сердца, человек который тебя ценит ✦</div>
+  </div>
+
+</div>
+</div>
+
+<!-- WISHES -->
+<div id="wish-sec">
+  <div class="wish-hdr rv">
+    <div class="sec-tag" data-i="wish_tag">🌟 Пожелания</div>
+    <h2 class="sec-h"><span data-i="wish_h">Тебе </span><em data-i="wish_count">19 пожеланий</em></h2>
+    <p style="font-size:.78rem;color:var(--softer)" data-i="swipe_hint">← листай →</p>
+  </div>
+  <div class="wish-scroll">
+    <div class="w-tile"><span class="w-icon">💪</span><h3 data-i="w1t">Здоровье</h3><p data-i="w1p">Пусть энергии хватает на всё — и ещё немного сверху</p></div>
+    <div class="w-tile"><span class="w-icon">🎓</span><h3 data-i="w2t">Учёба</h3><p data-i="w2p">Сессии пролетай легко, пятёрки сами находи тебя!</p></div>
+    <div class="w-tile"><span class="w-icon">😂</span><h3 data-i="w3t">Люди рядом</h3><p data-i="w3p">Чтобы рядом были те, кто по-настоящему</p></div>
+    <div class="w-tile"><span class="w-icon">✈️</span><h3 data-i="w4t">Путешествия</h3><p data-i="w4p">Новые места, запахи, ощущения — мир большой</p></div>
+    <div class="w-tile"><span class="w-icon">💸</span><h3 data-i="w5t">Достаток</h3><p data-i="w5p">Чтобы хватало — и на нужное, и на себя 😄</p></div>
+    <div class="w-tile"><span class="w-icon">🌸</span><h3 data-i="w6t">Счастье</h3><p data-i="w6p">Настоящее — не напоказ, а то что внутри греет</p></div>
+    <div class="w-tile"><span class="w-icon">🦋</span><h3 data-i="w7t">Свобода</h3><p data-i="w7p">Лети туда, куда хочется — без чужих разрешений</p></div>
+    <div class="w-tile"><span class="w-icon">🌙</span><h3 data-i="w8t">Покой</h3><p data-i="w8p">Внутренняя тишина — самая редкая роскошь</p></div>
+    <div class="w-tile"><span class="w-icon">🎨</span><h3 data-i="w9t">Творчество</h3><p data-i="w9p">Пусть то, что внутри — найдёт свой выход</p></div>
+    <div class="w-tile"><span class="w-icon">🏆</span><h3 data-i="w10t">Успех</h3><p data-i="w10p">Каждая цель — достижима. Ты справишься</p></div>
+    <div class="w-tile"><span class="w-icon">🌈</span><h3 data-i="w11t">Радость</h3><p data-i="w11p">В маленьких вещах — большое счастье</p></div>
+    <div class="w-tile"><span class="w-icon">🔥</span><h3 data-i="w12t">Огонь</h3><p data-i="w12p">Пусть тот внутренний огонь никогда не гаснет</p></div>
+    <div class="w-tile"><span class="w-icon">📚</span><h3 data-i="w13t">Рост</h3><p data-i="w13p">Каждый год — быть чуть сильнее, чем вчера</p></div>
+    <div class="w-tile"><span class="w-icon">💕</span><h3 data-i="w14t">Тепло</h3><p data-i="w14p">Пусть рядом будут те, кто согревает</p></div>
+    <div class="w-tile"><span class="w-icon">⭐</span><h3 data-i="w15t">Признание</h3><p data-i="w15p">Твои старания и талант — пусть замечают</p></div>
+    <div class="w-tile"><span class="w-icon">🌊</span><h3 data-i="w16t">Смелость</h3><p data-i="w16p">Смотреть в лицо трудным решениям — и идти</p></div>
+    <div class="w-tile"><span class="w-icon">😴</span><h3 data-i="w17t">Отдых</h3><p data-i="w17p">После студенческих марафонов — просто выспаться 😄</p></div>
+    <div class="w-tile"><span class="w-icon">🌹</span><h3 data-i="w18t">Маленький принц</h3><p data-i="w18p">Пусть твоя роза всегда будет под стеклянным колпаком</p></div>
+    <div class="w-tile"><span class="w-icon">💫</span><h3 data-i="w19t">Всё впереди</h3><p data-i="w19p">В 19 — только начало. Бояться нечего</p></div>
+  </div>
+</div>
+
+<div class="divider">✦ · · ✦ · · ✦</div>
+
+<!-- 19 REASONS -->
+<div class="sec">
+  <div class="sec-tag" data-i="reasons_tag">💖 О тебе</div>
+  <h2 class="sec-h rv"><span data-i="reasons_h1">19 вещей</span><br><em data-i="reasons_h2">о тебе</em></h2>
+  <p class="rv" style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--softer);font-size:clamp(.88rem,3.5vw,1.05rem);margin-bottom:.75rem;line-height:1.7" data-i="reasons_sub">Это не список. Это просто правда 🤍</p>
+  <ul style="list-style:none">
+    <li class="reason-item"><span class="rnum">01</span><span class="rtxt" data-i="r1">Твой смех — буквально освещает комнату</span></li>
+    <li class="reason-item"><span class="rnum">02</span><span class="rtxt" data-i="r2">Рядом с тобой чувствуешь себя собой</span></li>
+    <li class="reason-item"><span class="rnum">03</span><span class="rtxt" data-i="r3">С тобой можно молчать — и не чувствовать неловкости</span></li>
+    <li class="reason-item"><span class="rnum">04</span><span class="rtxt" data-i="r4">Иногда достаточно одного взгляда — и ты уже понимаешь</span></li>
+    <li class="reason-item"><span class="rnum">05</span><span class="rtxt" data-i="r5">Со скучно с тобой не бывает. Ни разу</span></li>
+    <li class="reason-item"><span class="rnum">06</span><span class="rtxt" data-i="r6">В трудный момент ты не ищешь слова — просто остаёшься рядом</span></li>
+    <li class="reason-item"><span class="rnum">07</span><span class="rtxt" data-i="r7">Слушать тебя — всегда интересно</span></li>
+    <li class="reason-item"><span class="rnum">08</span><span class="rtxt" data-i="r8">Когда ты рядом, даже мелочи становятся праздником</span></li>
+    <li class="reason-item"><span class="rnum">09</span><span class="rtxt" data-i="r9">Когда ты говоришь о мечтах — хочется им верить</span></li>
+    <li class="reason-item"><span class="rnum">10</span><span class="rtxt" data-i="r10">Ты умеешь радоваться — по-настоящему, без притворства</span></li>
+    <li class="reason-item"><span class="rnum">11</span><span class="rtxt" data-i="r11">Стараешься не обидеть — но и себя не теряешь</span></li>
+    <li class="reason-item"><span class="rnum">12</span><span class="rtxt" data-i="r12">Воспоминания с тобой — они со мной</span></li>
+    <li class="reason-item"><span class="rnum">13</span><span class="rtxt" data-i="r13">Одним словом умеешь сделать легче</span></li>
+    <li class="reason-item"><span class="rnum">14</span><span class="rtxt" data-i="r14">Имя Сезім тебе очень идёт — буквально</span></li>
+    <li class="reason-item"><span class="rnum">15</span><span class="rtxt" data-i="r15">Ты не меняешься ради чужого одобрения</span></li>
+    <li class="reason-item"><span class="rnum">16</span><span class="rtxt" data-i="r16">Иногда раздражаешь — но без тебя чего-то не хватает 😄</span></li>
+    <li class="reason-item"><span class="rnum">17</span><span class="rtxt" data-i="r17">Просто то, что ты есть — уже достаточно</span></li>
+    <li class="reason-item"><span class="rnum">18</span><span class="rtxt" data-i="r18">Твоя вера в будущее вдохновляет меня тоже</span></li>
+    <li class="reason-item"><span class="rnum">19</span><span class="rtxt" data-i="r19">Ты — это ты. И это главное. 💖</span></li>
+  </ul>
+</div>
+
+<!-- MUSIC -->
+<div class="sec rv">
+  <div class="sec-tag" data-i="music_tag">🎵 Песня</div>
+  <h2 class="sec-h"><span data-i="music_h1">Для тебя</span><br><em data-i="music_h2">эта песня</em></h2>
+  <div class="music-card">
+    <div class="vinyl" id="vinyl"></div>
+    <div class="trk-name">С Днём Рождения тебя</div>
+    <div class="trk-sub" data-i="music_sub">Зоопарк · Для Сезім 🎵</div>
+    <div class="prog-wrap"><div class="prog-bar" id="prog-bar"></div></div>
+    <div class="music-trigger-wrap">
+      <button class="music-trigger" onclick="startMusic()">
+        <span>🎵</span> <span data-i="music_btn">Включить фоном</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- YT PLAYER - YouTube IFrame API manages this -->
+<div id="yt-wrap" style="display:none;position:fixed;top:-9999px;width:1px;height:1px;overflow:hidden">
+  <div id="yt-player"></div>
+</div>
+<!-- FIXED MUSIC BAR -->
+<div id="music-bar-fixed">
+  <div class="mb-prog"><div class="mb-prog-fill" id="mb-prog-fill"></div></div>
+  <div class="mb-vinyl" id="mb-vinyl"></div>
+  <div class="mb-info">
+    <div class="mb-title">С Днём Рождения тебя</div>
+    <div class="mb-artist" data-i="music_sub">Зоопарк · Для Сезім 🎵</div>
+  </div>
+  <button class="mb-play" id="mb-play-btn" onclick="toggleMusicBar()">⏸</button>
+</div>
+
+<div class="divider">✦ · · ✦ · · ✦</div>
+
+<!-- STATS -->
+<div class="sec rv">
+  <div class="sec-tag" data-i="stats_tag">📊 Факты</div>
+  <h2 class="sec-h"><span data-i="stats_h1">Твои</span><br><em data-i="stats_h2">19 лет</em></h2>
+  <div class="stats-grid">
+    <div class="sbox"><span class="snum" id="s1">—</span><span class="slbl" data-i="stat1">дней прожито</span></div>
+    <div class="sbox"><span class="snum" id="s2">—</span><span class="slbl" data-i="stat2">часов на свете</span></div>
+    <div class="sbox"><span class="snum" id="s3">—</span><span class="slbl" data-i="stat3">ударов сердца (млн)</span></div>
+    <div class="sbox"><span class="snum" id="s4">—</span><span class="slbl" data-i="stat4">ночей проспала</span></div>
+    <div class="sbox"><span class="snum">19</span><span class="slbl" data-i="stat5">дней рождений</span></div>
+    <div class="sbox"><span class="snum">∞</span><span class="slbl" data-i="stat6">возможностей впереди</span></div>
+  </div>
+</div>
+
+<!-- MOMENTS — PHOTO UPLOAD -->
+<div class="sec rv">
+  <div class="sec-tag" data-i="moments_tag">📸 Моменты</div>
+  <h2 class="sec-h"><span data-i="moments_h1">Моменты</span><br><em data-i="moments_h2">которые были</em></h2>
+  <p style="font-size:.78rem;color:var(--softer);margin-bottom:.5rem" data-i="moments_hint">Нажми на ячейку — добавь своё фото 📷</p>
+  <div class="moments-grid" id="moments-grid">
+    <div class="moment-cell wide" id="mc0" onclick="triggerUpload(0)">
+      <span class="add-icon">📷</span>
+      <span class="add-lbl" data-i="add_photo">Добавить фото</span>
+      <input type="file" accept="image/*" onchange="loadPhoto(event,0)">
+      <button class="del-btn" onclick="delPhoto(event,0)">✕</button>
+    </div>
+    <div class="moment-cell" id="mc1" onclick="triggerUpload(1)">
+      <span class="add-icon">📷</span>
+      <span class="add-lbl" data-i="add_photo">Добавить фото</span>
+      <input type="file" accept="image/*" onchange="loadPhoto(event,1)">
+      <button class="del-btn" onclick="delPhoto(event,1)">✕</button>
+    </div>
+    <div class="moment-cell" id="mc2" onclick="triggerUpload(2)">
+      <span class="add-icon">📷</span>
+      <span class="add-lbl" data-i="add_photo">Добавить фото</span>
+      <input type="file" accept="image/*" onchange="loadPhoto(event,2)">
+      <button class="del-btn" onclick="delPhoto(event,2)">✕</button>
+    </div>
+    <div class="moment-cell" id="mc3" onclick="triggerUpload(3)">
+      <span class="add-icon">📷</span>
+      <span class="add-lbl" data-i="add_photo">Добавить фото</span>
+      <input type="file" accept="image/*" onchange="loadPhoto(event,3)">
+      <button class="del-btn" onclick="delPhoto(event,3)">✕</button>
+    </div>
+    <div class="moment-cell" id="mc4" onclick="triggerUpload(4)">
+      <span class="add-icon">📷</span>
+      <span class="add-lbl" data-i="add_photo">Добавить фото</span>
+      <input type="file" accept="image/*" onchange="loadPhoto(event,4)">
+      <button class="del-btn" onclick="delPhoto(event,4)">✕</button>
+    </div>
+    <div class="moment-cell wide" id="mc5" onclick="triggerUpload(5)">
+      <span class="add-icon">📷</span>
+      <span class="add-lbl" data-i="add_photo">Добавить фото</span>
+      <input type="file" accept="image/*" onchange="loadPhoto(event,5)">
+      <button class="del-btn" onclick="delPhoto(event,5)">✕</button>
+    </div>
+    <div class="moment-cell" id="mc6" onclick="triggerUpload(6)">
+      <span class="add-icon">📷</span>
+      <span class="add-lbl" data-i="add_photo">Добавить фото</span>
+      <input type="file" accept="image/*" onchange="loadPhoto(event,6)">
+      <button class="del-btn" onclick="delPhoto(event,6)">✕</button>
+    </div>
+    <div class="moment-cell" id="mc7" onclick="triggerUpload(7)">
+      <span class="add-icon">📷</span>
+      <span class="add-lbl" data-i="add_photo">Добавить фото</span>
+      <input type="file" accept="image/*" onchange="loadPhoto(event,7)">
+      <button class="del-btn" onclick="delPhoto(event,7)">✕</button>
+    </div>
+  </div>
+</div>
+
+<!-- COUNTDOWN -->
+<div class="sec rv">
+  <div class="sec-tag" data-i="cd_tag">⏳ Таймер</div>
+  <h2 class="sec-h"><span data-i="cd_h1">До следующего</span><br><em data-i="cd_h2">дня рождения 2027</em></h2>
+  <div class="ring-wrap">
+    <div class="ring-svg-w">
+      <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#e07a7a"/>
+            <stop offset="100%" stop-color="#f0d080"/>
+          </linearGradient>
+        </defs>
+        <circle class="rbg" cx="70" cy="70" r="65"/>
+        <circle class="rprog" id="rpc" cx="70" cy="70" r="65"/>
+      </svg>
+      <div class="rctr">
+        <span class="ring-d" id="cd-d">—</span>
+        <span class="ring-lbl" data-i="cd_days">дней</span>
+      </div>
+    </div>
+  </div>
+  <div class="cd-bot">
+    <div class="cdi"><span class="cdi-n" id="cd-h">—</span><span class="cdi-l" data-i="cd_h_lbl">Часов</span></div>
+    <div class="cdi"><span class="cdi-n" id="cd-m">—</span><span class="cdi-l" data-i="cd_m_lbl">Минут</span></div>
+    <div class="cdi"><span class="cdi-n" id="cd-s">—</span><span class="cdi-l" data-i="cd_s_lbl">Секунд</span></div>
+  </div>
+</div>
+
+<!-- STICKY -->
+<div class="sec rv">
+  <div class="sec-tag" data-i="sticky_tag">🗒️ Записки</div>
+  <h2 class="sec-h"><span data-i="sticky_h1">Слова</span><br><em data-i="sticky_h2">от сердца</em></h2>
+  <div class="sticky-grid">
+    <div class="sticky pk" style="--r:-2.5deg">«Ты для меня единственная в целом свете. И я для тебя — тоже единственный.»<span class="sticky-by">— Маленький принц 🌹</span></div>
+    <div class="sticky ye" style="--r:1.8deg"><span data-i="sticky2">4 июля особенный — потому что родилась Сезім. ⭐</span><span class="sticky-by" data-i="sticky2by">— Рядом с тобой</span></div>
+    <div class="sticky mn" style="--r:-1.2deg"><span data-i="sticky3">Никогда не меняйся, Сезім. Будь собой — именно такой 🌿</span><span class="sticky-by" data-i="sticky3by">— Искренне</span></div>
+    <div class="sticky lv" style="--r:2.3deg"><span data-i="sticky4">19 — это только новая глава. Лучшее впереди! 💜</span><span class="sticky-by" data-i="sticky4by">— Человек рядом ✦</span></div>
+  </div>
+</div>
+
+<div class="divider">✦ · · ✦ · · ✦</div>
+
+<!-- FINALE -->
+<div id="finale" class="rv">
+  <span class="rose-deco">🌹</span>
+  <div class="sec-tag" style="justify-content:center;margin-top:1rem" data-i="finale_tag">✨ Сюрприз</div>
+  <h2 class="sec-h" style="text-align:center"><span data-i="finale_h1">Последний</span><br><em data-i="finale_h2">подарок тебе</em></h2>
+  <p class="finale-txt" data-i="finale_txt">Нажми кнопку, Сезім — это для тебя! ✨</p>
+  <button class="finale-btn" onclick="launchFW()">✨ <span data-i="finale_btn">Открыть подарок!</span></button>
+</div>
+
+<footer>
+  <span class="ft-heart">🌹</span>
+  <p class="ft-txt" data-i="footer_txt">Сезімге — от чистого сердца,<br>от человека который тебя ценит ✦ 4 июля 2026</p>
+</footer>
+
+<!-- FW OVERLAY -->
+<div id="fwo">
+  <canvas id="fwc"></canvas>
+  <div class="fw-inner">
+    <div class="fw-big">🌹✨🎂</div>
+    <h2 class="fw-title"><span data-i="fw_title">С днём рождения,</span><br><span>Сезім!</span></h2>
+    <p class="fw-msg" data-i="fw_msg">
+      Тебе 19 — и это прекрасно! 🌹<br>
+      Этот день только твой.<br>
+      Пусть всё, о чём мечтаешь — случится.<br>
+      И знай: ты мне очень дорога. 💫
+    </p>
+    <button class="fw-close" onclick="closeFW()" data-i="fw_close">Спасибо 💖</button>
+  </div>
+</div>
+
+<script>
+/* ═══════ TRANSLATIONS ═══════ */
+const T = {
+  ru: {
+    loading:'Загружаем...', eyebrow:'✦ 4 июля · С днём рождения · 19 лет ✦',
+    years_lived:'ЛЕТ ПРОЖИТО', hero_sub:'Сегодня самый особенный человек — это ты ✨',
+    scroll_hint:'дальше',
+    cake_tag:'🎂 Торт', cake_h1:'Задуй свечу,', cake_h2:'загадай желание!',
+    blow_btn:'Задуть свечу!',
+    blow_result:'Молодец, Сезім! 🌟<br>Пусть желание сбудется —<br>этот день только для тебя! 💖',
+    letter_tag:'💌 Письмо от сердца', letter_h1:'Хочу тебе', letter_h2:'кое-что сказать...',
+    letter_body:'Сезім... сегодня хочу сказать тебе кое-что важное.<br><br>Ты мне очень <strong>дорога</strong>. Просто так — без объяснений, без списков причин.<br><br>Каждый момент рядом с тобой — это смех, тишина и настоящесть. Такие люди встречаются редко.<br><br><strong>19 лет</strong> — это только начало твоей истории. И ты заслуживаешь каждой её страницы.<br><br>Что бы ни было впереди — знай: рядом есть человек. ✨',
+    letter_sig:'— От чистого сердца, человек который тебя ценит ✦',
+    lp_quote:'Ты для меня единственная в целом свете. И я для тебя — тоже единственный.',
+    wish_tag:'🌟 Пожелания', wish_h:'Тебе ', wish_count:'19 пожеланий', swipe_hint:'← листай →',
+    w1t:'Здоровье',w1p:'Пусть энергии хватает на всё — и ещё немного сверху',
+    w2t:'Учёба',w2p:'Сессии пролетай легко, пятёрки сами находи тебя!',
+    w3t:'Люди рядом',w3p:'Чтобы рядом были те, кто по-настоящему',
+    w4t:'Путешествия',w4p:'Новые места, запахи, ощущения — мир большой',
+    w5t:'Достаток',w5p:'Чтобы хватало — и на нужное, и на себя 😄',
+    w6t:'Счастье',w6p:'Настоящее — не напоказ, а то что внутри греет',
+    w7t:'Свобода',w7p:'Лети туда, куда хочется — без чужих разрешений',
+    w8t:'Покой',w8p:'Внутренняя тишина — самая редкая роскошь',
+    w9t:'Творчество',w9p:'Пусть то, что внутри — найдёт свой выход',
+    w10t:'Успех',w10p:'Каждая цель — достижима. Ты справишься',
+    w11t:'Радость',w11p:'В маленьких вещах — большое счастье',
+    w12t:'Огонь',w12p:'Пусть тот внутренний огонь никогда не гаснет',
+    w13t:'Рост',w13p:'Каждый год — быть чуть сильнее, чем вчера',
+    w14t:'Тепло',w14p:'Пусть рядом будут те, кто согревает',
+    w15t:'Признание',w15p:'Твои старания и талант — пусть замечают',
+    w16t:'Смелость',w16p:'Смотреть в лицо трудным решениям — и идти',
+    w17t:'Отдых',w17p:'После студенческих марафонов — просто выспаться 😄',
+    w18t:'Маленький принц',w18p:'Пусть твоя роза всегда будет под стеклянным колпаком',
+    w19t:'Всё впереди',w19p:'В 19 — только начало. Бояться нечего',
+    reasons_tag:'💖 О тебе', reasons_h1:'19 вещей', reasons_h2:'о тебе',
+    reasons_sub:'Это не список. Это просто правда 🤍',
+    r1:'Твой смех — буквально освещает комнату',
+    r2:'Рядом с тобой чувствуешь себя собой',
+    r3:'С тобой можно молчать — и не чувствовать неловкости',
+    r4:'Иногда достаточно одного взгляда — и ты уже понимаешь',
+    r5:'Со скучно с тобой не бывает. Ни разу',
+    r6:'В трудный момент ты не ищешь слова — просто остаёшься рядом',
+    r7:'Слушать тебя — всегда интересно',
+    r8:'Когда ты рядом, даже мелочи становятся праздником',
+    r9:'Когда ты говоришь о мечтах — хочется им верить',
+    r10:'Ты умеешь радоваться — по-настоящему, без притворства',
+    r11:'Стараешься не обидеть — но и себя не теряешь',
+    r12:'Воспоминания с тобой — они со мной',
+    r13:'Одним словом умеешь сделать легче',
+    r14:'Имя Сезім тебе очень идёт — буквально',
+    r15:'Ты не меняешься ради чужого одобрения',
+    r16:'Иногда раздражаешь — но без тебя чего-то не хватает 😄',
+    r17:'Просто то, что ты есть — уже достаточно',
+    r18:'Твоя вера в будущее вдохновляет меня тоже',
+    r19:'Ты — это ты. И это главное. 💖',
+    music_tag:'🎵 Песня', music_h1:'Для тебя', music_h2:'эта песня',
+    music_sub:'Зоопарк · Для Сезім 🎵', music_btn:'Включить фоном',
+    stats_tag:'📊 Факты', stats_h1:'Твои', stats_h2:'19 лет',
+    stat1:'дней прожито', stat2:'часов на свете', stat3:'ударов сердца (млн)',
+    stat4:'ночей проспала', stat5:'дней рождений', stat6:'возможностей впереди',
+    moments_tag:'📸 Моменты', moments_h1:'Моменты', moments_h2:'которые были',
+    moments_hint:'Нажми на ячейку — добавь своё фото 📷', add_photo:'Добавить фото',
+    cd_tag:'⏳ Таймер', cd_h1:'До следующего', cd_h2:'дня рождения 2027',
+    cd_days:'дней', cd_h_lbl:'Часов', cd_m_lbl:'Минут', cd_s_lbl:'Секунд',
+    sticky_tag:'🗒️ Записки', sticky_h1:'Слова', sticky_h2:'от сердца',
+    sticky1:'Сезім, рядом с тобой — всегда хорошо. Просто так. ✨',
+    sticky1by:'— Человек рядом 💕',
+    sticky2:'4 июля особенный — потому что родилась Сезім. ⭐',
+    sticky2by:'— Рядом с тобой',
+    sticky3:'Никогда не меняйся, Сезім. Будь собой — именно такой 🌿',
+    sticky3by:'— Искренне',
+    sticky4:'19 — это только новая глава. Лучшее впереди! 💜',
+    sticky4by:'— Человек рядом ✦',
+    finale_tag:'✨ Сюрприз', finale_h1:'Последний', finale_h2:'подарок тебе',
+    finale_txt:'Нажми кнопку, Сезім — это для тебя! ✨',
+    finale_btn:'Открыть подарок!',
+    footer_txt:'Сезімге — от чистого сердца,<br>от человека который тебя ценит ✦ 4 июля 2026',
+    fw_title:'С днём рождения,', fw_close:'Спасибо 💖',
+    fw_msg:'Тебе 19 — и это прекрасно! 🌹<br>Этот день только твой.<br>Пусть всё, о чём мечтаешь — случится.<br>И знай: ты мне очень дорога. 💫',
+  },
+  kk: {
+    loading:'Жүктелуде...', eyebrow:'✦ 4 шілде · Туған күніңмен · 19 жас ✦',
+    years_lived:'ЖАСАҒАН ЖЫЛДАРЫҢ', hero_sub:'Бүгін ең ерекше адам — сенсің ✨',
+    scroll_hint:'ары қарай',
+    cake_tag:'🎂 Торт', cake_h1:'Шамды үрле,', cake_h2:'тілек тіле!',
+    blow_btn:'Шамды үрле!',
+    blow_result:'Жарайсың, Сезім! 🌟<br>Тілегің орындалсын —<br>бұл күн тек сенікі! 💖',
+    letter_tag:'💌 Жүректен хат', letter_h1:'Саған', letter_h2:'айтқым келеді...',
+    letter_body:'Сезім... бүгін саған маңызды бір нәрсе айтқым келеді.<br><br>Сен маған өте <strong>қымбатсың</strong>. Жай ғана солай — себепсіз, тізімсіз.<br><br>Сенімен болған әр сәт — күлкі де, тыныштық та, шынайылық та. Мұндай адам сирек кездеседі.<br><br><strong>19 жас</strong> — бұл сенің өмір тарихының тек басы. Және сен оның әр бетіне лайықсың.<br><br>Алдыңда не болса да — білгін: қасыңда адам бар. ✨',
+    letter_sig:'— Шын жүректен, сені бағалайтын адам ✦',
+    lp_quote:'Сен менің үшін бүкіл дүниедегі жалғызсың. Мен де сенің үшін сондаймын.',
+    wish_tag:'🌟 Тілектер', wish_h:'Саған ', wish_count:'19 тілек', swipe_hint:'← сырғытыңыз →',
+    w1t:'Денсаулық',w1p:'Жыл бойы күш-жігер мол болсын',
+    w2t:'Оқу',w2p:'Сессиялар оңай өтсін, пятёркалар жаусын!',
+    w3t:'Жақын адамдар',w3p:'Қасыңда шынайы адамдар болсын',
+    w4t:'Саяхат',w4p:'Жаңа жерлер, жаңа сезімдер — дүние үлкен',
+    w5t:'Молшылық',w5p:'Керегіне де, өзіңе де жетсін 😄',
+    w6t:'Бақыт',w6p:'Шынайы — көз үшін емес, жүрек үшін',
+    w7t:'Еркіндік',w7p:'Қалаған жеріңе ұш — рұқсатсыз',
+    w8t:'Тыныштық',w8p:'Ішкі тыныштық — ең сирек байлық',
+    w9t:'Шығармашылық',w9p:'Ішіңдегі нәрсе шығар жол тапсын',
+    w10t:'Жетістік',w10p:'Әр мақсат — қолжетімді. Сен мықтысың',
+    w11t:'Қуаныш',w11p:'Кішкентай нәрселерде — үлкен бақыт',
+    w12t:'От',w12p:'Ішіндегі от ешқашан өшпесін',
+    w13t:'Даму',w13p:'Жыл сайын кешегіңнен мықтырақ бол',
+    w14t:'Жылулық',w14p:'Жылытатын адамдар қасыңда болсын',
+    w15t:'Мойындау',w15p:'Талантың мен еңбегің байқалсын',
+    w16t:'Батылдық',w16p:'Қиын шешімге бетпе-бет — және алға',
+    w17t:'Демалыс',w17p:'Студенттік маратоннан кейін ұйықта 😄',
+    w18t:'Кішкентай Ханзада',w18p:'Гүлің әрдайым шыны қалпақтың астында болсын',
+    w19t:'Бәрі алда',w19p:'19-да — тек бастама. Қорқудың керегі жоқ',
+    reasons_tag:'💖 Сен туралы', reasons_h1:'19 нәрсе', reasons_h2:'сен туралы',
+    reasons_sub:'Бұл тізім емес. Бұл — жай шындық 🤍',
+    r1:'Күлкің — бөлмені жарықтандырады, шынымен',
+    r2:'Қасыңда болғанда өзіңді өзің сезінесің',
+    r3:'Сенімен үндемей отыруға болады — ыңғайсыз болмай',
+    r4:'Кейде бір қарас жеткілікті — сен түсінесің',
+    r5:'Сенімен скучно болған сәт болған жоқ',
+    r6:'Қиын кезде сөз іздемейсің — жай қасымда боласың',
+    r7:'Сені тыңдау — әрдайым қызықты',
+    r8:'Сен барда кішкентай нәрсе де мереке болады',
+    r9:'Арманыңды айтқанда — соған сенгің келеді',
+    r10:'Шын жүректен қуана аласың — жасанды емес',
+    r11:'Ренжітпеуге тырысасың — бірақ өзіңді де жоғалтпайсың',
+    r12:'Сенімен естеліктер — менімен',
+    r13:'Бір сөзіңмен жеңілдете аласың',
+    r14:'Сезім деген есімің саған өте дәл келеді',
+    r15:'Бөгде мақұлдау үшін өзгермейсің',
+    r16:'Кейде мазамды аласың — бірақ онсыз бір нәрсе жетіспейді 😄',
+    r17:'Жай ғана барсың — бұл жеткілікті',
+    r18:'Болашаққа сенімің маған да шабыт береді',
+    r19:'Сен — сенсің. Бұл ең маңыздысы. 💖',
+    music_tag:'🎵 Ән', music_h1:'Сен үшін', music_h2:'бұл ән',
+    music_sub:'Зоопарк · Сезімге 🎵', music_btn:'Фонда қос',
+    stats_tag:'📊 Фактілер', stats_h1:'Сенің', stats_h2:'19 жылың',
+    stat1:'өмір сүрген күн', stat2:'сағат өмір сүрдің', stat3:'жүрек соғысы (млн)',
+    stat4:'түн ұйықтадың', stat5:'туған күн тойладың', stat6:'алдағы мүмкіндіктер',
+    moments_tag:'📸 Сәттер', moments_h1:'Бірге', moments_h2:'өткен сәттер',
+    moments_hint:'Ұяшықты бас — фотоңды қос 📷', add_photo:'Фото қос',
+    cd_tag:'⏳ Таймер', cd_h1:'Келесі', cd_h2:'туған күніне дейін 2027',
+    cd_days:'күн', cd_h_lbl:'Сағат', cd_m_lbl:'Минут', cd_s_lbl:'Секунд',
+    sticky_tag:'🗒️ Парақшалар', sticky_h1:'Жүректен', sticky_h2:'жазылған сөздер',
+    sticky1:'Сезім, қасыңда болғанда — әрдайым жақсы. Жай ғана. ✨',
+    sticky1by:'— Қасыңдағы адам 💕',
+    sticky2:'4 шілде ерекше — Сезім туылғандықтан. ⭐',
+    sticky2by:'— Қасыңдағы адам',
+    sticky3:'Ешқашан өзгерме, Сезім. Дәл осылай бол 🌿',
+    sticky3by:'— Шынайы',
+    sticky4:'19 — жаңа тараудың басы ғана. Ең жақсысы алда! 💜',
+    sticky4by:'— Қасыңдағы адам ✦',
+    finale_tag:'✨ Сюрприз', finale_h1:'Соңғы', finale_h2:'сыйым саған',
+    finale_txt:'Батырманы бас, Сезім — бұл сен үшін! ✨',
+    finale_btn:'Сыйды ашу!',
+    footer_txt:'Сезімге — шын жүректен,<br>сені бағалайтын адамнан ✦ 4 шілде 2026',
+    fw_title:'Туған күніңмен,', fw_close:'Рахмет 💖',
+    fw_msg:'19 жасың! Бұл тамаша! 🌹<br>Бұл күн тек сенікі.<br>Армандаған нәрселерің орындалсын.<br>Білгін: сен маған өте қымбатсың. 💫',
+  },
+  en: {
+    loading:'Loading...', eyebrow:'✦ July 4 · Happy Birthday · 19 years ✦',
+    years_lived:'YEARS LIVED', hero_sub:'Today the most special person is you ✨',
+    scroll_hint:'scroll',
+    cake_tag:'🎂 Cake', cake_h1:'Blow the candle,', cake_h2:'make a wish!',
+    blow_btn:'Blow it out!',
+    blow_result:'You did it, Sezim! 🌟<br>May your wish come true —<br>this day is all yours! 💖',
+    letter_tag:'💌 Letter from the heart', letter_h1:'I want to', letter_h2:'tell you something...',
+    letter_body:'Sezim... today I want to tell you something important.<br><br>You mean so much <strong>to me</strong>. Simply — without explanations, without lists.<br><br>Every moment with you — laughter, silence, realness. People like you are rare.<br><br><strong>19 years</strong> — this is just the beginning of your story. And you deserve every page of it.<br><br>Whatever comes next — know this: there is someone beside you. ✨',
+    letter_sig:'— From the heart, someone who truly values you ✦',
+    lp_quote:'You are unique in all the world to me. And I am unique in all the world to you.',
+    wish_tag:'🌟 Wishes', wish_h:'For you — ', wish_count:'19 wishes', swipe_hint:'← swipe →',
+    w1t:'Health',w1p:'May you always have energy to spare',
+    w2t:'Studies',w2p:'Easy exams, great grades — you got this!',
+    w3t:'Real people',w3p:'May the right people always be around',
+    w4t:'Travel',w4p:'New places, smells, feelings — the world is big',
+    w5t:'Abundance',w5p:'Enough for what matters — and for yourself 😄',
+    w6t:'Happiness',w6p:'Real happiness — not for show, but for within',
+    w7t:'Freedom',w7p:'Fly wherever you want — no permission needed',
+    w8t:'Peace',w8p:'Inner stillness — the rarest luxury',
+    w9t:'Creativity',w9p:'May what is inside find its way out',
+    w10t:'Success',w10p:'Every goal is reachable. You can do it',
+    w11t:'Joy',w11p:'Big happiness hides in small things',
+    w12t:'Fire',w12p:'May that inner fire never go out',
+    w13t:'Growth',w13p:'Every year — a little stronger than before',
+    w14t:'Warmth',w14p:'May those who warm your heart stay close',
+    w15t:'Recognition',w15p:'Your effort and talent — may they be seen',
+    w16t:'Courage',w16p:'Face the hard decisions — and go',
+    w17t:'Rest',w17p:'After student marathons — just sleep 😄',
+    w18t:'Little Prince',w18p:'May your rose always be under the glass dome',
+    w19t:'All ahead',w19p:'At 19 — it is only the beginning. Nothing to fear',
+    reasons_tag:'💖 About you', reasons_h1:'19 things', reasons_h2:'about you',
+    reasons_sub:'Not a list. Just the truth 🤍',
+    r1:'Your laugh literally lights up the room',
+    r2:'Around you, you feel like yourself',
+    r3:'You can be silent together — and it never feels awkward',
+    r4:'Sometimes one look is enough — you just understand',
+    r5:'It has never been boring with you. Not once',
+    r6:'When things get hard you don\'t search for words — you just stay',
+    r7:'Listening to you is always interesting',
+    r8:'When you are around, even small things become a celebration',
+    r9:'When you talk about dreams — you want to believe them',
+    r10:'Being this true to yourself at 19 — rare',
+    r11:'You try not to hurt others — but you don\'t lose yourself either',
+    r12:'Memories with you — they stay with me',
+    r13:'One word from you can make things lighter',
+    r14:'The name Sezim suits you — literally',
+    r15:'You don\'t change yourself for anyone\'s approval',
+    r16:'Sometimes you drive me crazy — but something feels missing without you 😄',
+    r17:'Simply that you exist — is already enough',
+    r18:'Your belief in the future inspires me too',
+    r19:'You are you. And that is everything. 💖',
+    music_tag:'🎵 Song', music_h1:'This song', music_h2:'is for you',
+    music_sub:'Zoopark · For Sezim 🎵', music_btn:'Play in background',
+    stats_tag:'📊 Facts', stats_h1:'Your', stats_h2:'19 years',
+    stat1:'days lived', stat2:'hours on earth', stat3:'heartbeats (mln)',
+    stat4:'nights of sleep', stat5:'birthdays celebrated', stat6:'possibilities ahead',
+    moments_tag:'📸 Moments', moments_h1:'Moments', moments_h2:'we shared',
+    moments_hint:'Tap a cell — add your photo 📷', add_photo:'Add photo',
+    cd_tag:'⏳ Timer', cd_h1:'Until your next', cd_h2:'birthday 2027',
+    cd_days:'days', cd_h_lbl:'Hours', cd_m_lbl:'Minutes', cd_s_lbl:'Seconds',
+    sticky_tag:'🗒️ Notes', sticky_h1:'Words', sticky_h2:'from the heart',
+    sticky1:'Sezim, being around you — always feels right. Just like that. ✨',
+    sticky1by:'— The person beside you 💕',
+    sticky2:'July 4 is special — because Sezim was born. ⭐',
+    sticky2by:'— Right beside you',
+    sticky3:'Never change, Sezim. Stay exactly like this 🌿',
+    sticky3by:'— Sincerely',
+    sticky4:'19 is just a new chapter. The best is ahead! 💜',
+    sticky4by:'— The person near you ✦',
+    finale_tag:'✨ Surprise', finale_h1:'One last', finale_h2:'gift for you',
+    finale_txt:'Press the button, Sezim — this is for you! ✨',
+    finale_btn:'Open the gift!',
+    footer_txt:'For Sezim — from the heart,<br>from someone who truly values you ✦ July 4, 2026',
+    fw_title:'Happy Birthday,', fw_close:'Thank you 💖',
+    fw_msg:'You are 19 — and that is wonderful! 🌹<br>This day is yours alone.<br>May everything you dream of — come true.<br>And know: you mean so much to me. 💫',
+  }
+};
+
+let curLang = 'ru';
+function setLang(l){
+  curLang = l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.textContent.toLowerCase().includes(l==='kk'?'қаз':l)));
+  document.querySelectorAll('[data-i]').forEach(el=>{
+    const k=el.getAttribute('data-i');
+    if(T[l][k]!==undefined) el.innerHTML=T[l][k];
+  });
+}
+
+/* ═══════ LOADER ═══════ */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('gone');
+    initStars(); initPetals(); animStats(); startCD();
+    setTimeout(animRing,900);
+  },2600);
+});
+
+
+
+/* ═══════ STARS ═══════ */
+function initStars(){
+  const c=document.getElementById('sc'),ctx=c.getContext('2d');
+  let W,H,stars=[];
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
+  resize();addEventListener('resize',resize);
+  const starCount=isMobile?100:220;
+  for(let i=0;i<starCount;i++){
+    const r=Math.random();
+    stars.push({x:Math.random()*W,y:Math.random()*H,
+      size:r<.7?Math.random()*.8+.2:Math.random()*1.5+.8,
+      phase:Math.random()*Math.PI*2,speed:Math.random()*.004+.001,
+      color:r<.8?'255,255,255':`${180+Math.floor(Math.random()*75)},${160+Math.floor(Math.random()*60)},${100+Math.floor(Math.random()*80)}`});
+  }
+  function draw(t){
+    ctx.clearRect(0,0,W,H);
+    stars.forEach(s=>{
+      const a=.15+.75*Math.abs(Math.sin(t*s.speed+s.phase));
+      ctx.beginPath();ctx.arc(s.x,s.y,s.size,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${s.color},${a})`;ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+}
+
+/* ═══════ PETALS ═══════ */
+function initPetals(){
+  const hero=document.getElementById('hero');
+  const items=['🌹','✨','⭐','🌸','💫','🌟'];
+  for(let i=0;i<16;i++){
+    const el=document.createElement('div');
+    el.className='pdeco';el.textContent=items[i%items.length];
+    el.style.cssText=`left:${Math.random()*100}%;bottom:-5%;font-size:${.7+Math.random()*.7}rem;animation-duration:${Math.random()*10+8}s;animation-delay:${Math.random()*14}s`;
+    hero.appendChild(el);
+  }
+}
+
+/* ═══════ SCROLL REVEAL ═══════ */
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on')})},{threshold:.1});
+document.querySelectorAll('.rv,.reason-item').forEach(el=>obs.observe(el));
+
+/* ═══════ BLOW CANDLE ═══════ */
+function blowCandle(){
+  document.getElementById('blow-btn').style.display='none';
+  document.getElementById('flame').style.display='none';
+  const ci=document.getElementById('cake-icon');
+  ci.textContent='🎉';ci.style.animation='none';
+  ci.style.filter='drop-shadow(0 0 36px rgba(240,208,128,.7))';
+  document.getElementById('blow-result').style.display='block';
+  for(let i=0;i<50;i++)confetti();
+}
+function confetti(){
+  const cols=['#e07a7a','#f0d080','#c8b8f0','#a8e6d4','#f9b8c8'];
+  const el=document.createElement('div');
+  el.style.cssText=`position:fixed;z-index:8000;pointer-events:none;width:${4+Math.random()*6}px;height:${4+Math.random()*6}px;background:${cols[0|Math.random()*cols.length]};border-radius:${Math.random()>.5?'50%':'2px'};left:${Math.random()*100}%;top:${25+Math.random()*45}%;animation:cfall ${1+Math.random()*1.5}s ease forwards`;
+  document.body.appendChild(el);el.addEventListener('animationend',()=>el.remove());
+}
+const cst=document.createElement('style');
+cst.textContent='@keyframes cfall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(200px) rotate(360deg);opacity:0}}';
+document.head.appendChild(cst);
+
+/* ═══════ PHOTO UPLOAD ═══════ */
+function triggerUpload(idx){
+  const cell=document.getElementById('mc'+idx);
+  if(cell.classList.contains('has-img'))return;
+  cell.querySelector('input').click();
+}
+function loadPhoto(e,idx){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const cell=document.getElementById('mc'+idx);
+    let img=cell.querySelector('img');
+    if(!img){img=document.createElement('img');cell.insertBefore(img,cell.firstChild);}
+    img.src=ev.target.result;
+    cell.classList.add('has-img');
+    cell.onclick=null;
+  };
+  reader.readAsDataURL(file);
+}
+function delPhoto(e,idx){
+  e.stopPropagation();
+  const cell=document.getElementById('mc'+idx);
+  const img=cell.querySelector('img');if(img)img.remove();
+  cell.classList.remove('has-img');
+  cell.onclick=()=>triggerUpload(idx);
+  const inp=cell.querySelector('input');inp.value='';
+}
+
+/* ═══════ MUSIC — YouTube IFrame API ═══════ */
+let ytPlayer = null, musicPlaying = false, progTimer;
+
+// Load YouTube IFrame API
+(function(){
+  const tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
+})();
+
+// Called automatically by YT API when ready
+function onYouTubeIframeAPIReady(){
+  ytPlayer = new YT.Player('yt-player', {
+    height: '1', width: '1',
+    videoId: '21Z0D_ahdF8',
+    playerVars: { autoplay: 0, controls: 0, playsinline: 1, rel: 0, modestbranding: 1 },
+    events: {
+      onStateChange: function(e){
+        if(e.data === YT.PlayerState.ENDED){
+          stopMusicUI();
+        }
+      }
+    }
+  });
+}
+
+function startMusic(){
+  const wrap = document.getElementById('yt-wrap');
+  const t = document.querySelector('.music-trigger');
+
+  // Show the (invisible) iframe wrap so YT API can interact with it
+  wrap.style.display = 'block';
+
+  if(ytPlayer && ytPlayer.playVideo){
+    ytPlayer.playVideo();
+    startMusicUI();
+    if(t){t.innerHTML='<span>✓</span> <span data-i="music_playing">Играет...</span>';t.onclick=null;}
+  } else {
+    // API not ready yet — wait briefly then try
+    setTimeout(()=>{
+      if(ytPlayer && ytPlayer.playVideo){
+        ytPlayer.playVideo();
+        startMusicUI();
+        if(t){t.innerHTML='<span>✓</span> <span>Играет...</span>';t.onclick=null;}
+      }
+    }, 1500);
+  }
+}
+
+function startMusicUI(){
+  musicPlaying = true;
+  document.getElementById('music-bar-fixed').classList.add('show');
+  document.getElementById('mb-vinyl').classList.add('spin');
+  document.getElementById('vinyl').classList.add('spin');
+  document.getElementById('mb-play-btn').textContent = '⏸';
+  startProg();
+}
+
+function stopMusicUI(){
+  musicPlaying = false;
+  document.getElementById('mb-vinyl').classList.remove('spin');
+  document.getElementById('vinyl').classList.remove('spin');
+  document.getElementById('mb-play-btn').textContent = '▶';
+  clearInterval(progTimer);
+}
+
+function startProg(){
+  let p = 0;
+  clearInterval(progTimer);
+  progTimer = setInterval(()=>{
+    p = (p + .035) % 100;
+    document.getElementById('mb-prog-fill').style.width = p + '%';
+    document.getElementById('prog-bar').style.width = p + '%';
+  }, 400);
+}
+
+function toggleMusicBar(){
+  if(!ytPlayer) return;
+  if(musicPlaying){
+    ytPlayer.pauseVideo();
+    stopMusicUI();
+  } else {
+    ytPlayer.playVideo();
+    startMusicUI();
+  }
+}
+
+function prevTrk(){}function nextTrk(){}
+
+
+/* ═══════ STATS ═══════ */
+function animStats(){
+  const bd=new Date('2007-07-04'),now=new Date();
+  const days=Math.floor((now-bd)/86400000);
+  cntUp('s1',days);cntUp('s2',days*24);cntUp('s3',Math.round(days*24*60*70/1e6));cntUp('s4',Math.round(days*.33));
+}
+function cntUp(id,target){
+  const el=document.getElementById(id);if(!el)return;
+  const t0=performance.now(),dur=1800;
+  function tick(t){const p=Math.min((t-t0)/dur,1);el.textContent=Math.floor(p*p*target).toLocaleString();if(p<1)requestAnimationFrame(tick);else el.textContent=target.toLocaleString()}
+  requestAnimationFrame(tick);
+}
+
+/* ═══════ COUNTDOWN ═══════ */
+function startCD(){
+  function tick(){
+    const now=new Date(),next=new Date('2027-07-04T00:00:00');
+    const diff=Math.max(next-now,0);
+    const d=Math.floor(diff/86400000),h=Math.floor(diff%86400000/3600000),m=Math.floor(diff%3600000/60000),s=Math.floor(diff%60000/1000);
+    document.getElementById('cd-d').textContent=d;
+    document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
+    document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
+    document.getElementById('cd-s').textContent=String(s).padStart(2,'0');
+  }
+  tick();setInterval(tick,1000);
+}
+function animRing(){
+  const now=new Date(),next=new Date('2027-07-04'),prev=new Date('2026-07-04');
+  const pct=Math.min(Math.max((now-prev)/(next-prev),0),1);
+  document.getElementById('rpc').style.strokeDashoffset=408*(1-pct);
+}
+
+/* ═══════ FIREWORKS ═══════ */
+let fwr;
+function launchFW(){
+  document.getElementById('fwo').classList.add('show');
+  const c=document.getElementById('fwc'),ctx=c.getContext('2d');
+  c.width=innerWidth;c.height=innerHeight;
+  const pts=[],cols=['#e07a7a','#f0d080','#f9b8c8','#c8b8f0','#a8e6d4','#fff','#c4924a'];
+  function burst(x,y){for(let i=0;i<100;i++){const a=Math.random()*Math.PI*2,sp=Math.random()*7+2;pts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:1,decay:Math.random()*.011+.005,size:Math.random()*3.5+1.5,col:cols[0|Math.random()*cols.length]});}}
+  let last=0;
+  function draw(t){
+    ctx.fillStyle='rgba(8,12,24,.18)';ctx.fillRect(0,0,c.width,c.height);
+    if(t-last>500){burst(Math.random()*c.width,Math.random()*c.height*.65+40);last=t}
+    for(let i=pts.length-1;i>=0;i--){const p=pts[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.08;p.life-=p.decay;if(p.life<=0){pts.splice(i,1);continue}ctx.globalAlpha=p.life;ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);ctx.fill();}
+    ctx.globalAlpha=1;fwr=requestAnimationFrame(draw);
+  }
+  burst(c.width*.5,c.height*.3);burst(c.width*.25,c.height*.4);burst(c.width*.75,c.height*.35);
+  fwr=requestAnimationFrame(draw);
+}
+function closeFW(){document.getElementById('fwo').classList.remove('show');cancelAnimationFrame(fwr)}
+</script>
+</body>
+</html>
